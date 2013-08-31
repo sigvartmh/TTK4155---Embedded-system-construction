@@ -12,7 +12,7 @@ Writing SRE to one enables the External Memory Interface
 
 So to initiate the EMCUCR
 
-	uint8_t MCUCR |= (1 << SRE);
+	MCUCR |= (1 << SRE);
 
 Also check External memory addressing page 30-31
 
@@ -21,3 +21,13 @@ Also check External memory addressing page 30-31
 	void XRAM(void){
 		unsigned char *SRAMaddress = (unsigned char *) (OFFSET+1);
 	};
+
+
+I've added this to the sram.c file.
+
+What needs to be done:
+	-Check out in lab if the UART works properly now.
+	-Wiring the ATmega162 to the latch, SRAM and GAL IC
+	-Complete the VHDL code for the GAL IC
+	-Fix the wiring and do SRAM test afterwards
+	-(check out the low-pass filter on the ALE signal, schematic STK501)
