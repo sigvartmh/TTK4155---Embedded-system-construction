@@ -1,10 +1,7 @@
 #include <avr/io.h>
 #include "uart.h"
+#include "setup.h"
 
-
-#define F_OSC  4915450
-#define F_CPU F_OSC
-#define BAUD 9600
 #define MYUBRR F_OSC/16/BAUD-1
 
 int main(void)
