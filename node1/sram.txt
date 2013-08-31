@@ -1,0 +1,23 @@
+So I've taken a look at what we have to do about the SRAM.
+
+If you take a look at the ATmega162 datasheet
+There is something called MCUCR which is the MCU control register
+There is also something called EMCUCR which is the Extended MCU Control Register
+
+And the SFIOR
+
+Take a look at page 25 there is somee schematics with the Latch and SRAM
+
+Writing SRE to one enables the External Memory Interface
+
+So to initiate the EMCUCR
+
+	uint8_t MCUCR |= (1 << SRE);
+
+Also check External memory addressing page 30-31
+
+	#define OFFSET 0x1000
+
+	void XRAM(void){
+		unsigned char *SRAMaddress = (unsigned char *) (OFFSET+1);
+	};
