@@ -5,6 +5,8 @@
 
 #define MYUBRR F_OSC/16/BAUD-1
 
+//change on git
+
 int main(void)
 {
 	uart_init(MYUBRR);
