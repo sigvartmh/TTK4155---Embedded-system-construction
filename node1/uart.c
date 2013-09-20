@@ -1,45 +1,48 @@
 #include "uart.h"
 #include <avr/io.h>
-#include <util/delay.h>
 
 FILE *uart;
 
-uint8_t uart_init(unsigned int baudrate){
-
-	UBRR0L = (unsigned char) (baudrate);
-	UBRR0H = (unsigned char) (baudrate >> 8);
+int UART_init(unsigned int baudrate) {
+	//Set UART0 baud rate
+	UBRR0L = (unsigned char)(baudrate);
+	UBRR0H = (unsigned char)(baudrate >> 8);
 	
-	//enable tx0 and rx0
+	//Enable TX0 and RX0
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 	
-	//set 8bit mode
-	UCSR0C = (1<<URSEL0)|(1<<UCSZ00)|(3<<UCSZ01);//UCSR0C &= ~(3<<UCSZ01)
+	//Set frame format: 8data, 2stop bit
+	UCSR0C = (1<<URSEL0)|(1<<USBS0)|(3<<UCSZ00);
 	
-	uart = fdevopen(&uart_putchar, &uart_recchar);
-	//(connecting printf)
+	//Connect printf
+	uart = fdevopen(&UART_putchar, &UART_recchar);
 
 	return 0;
 }
 
-uint8_t uart_putchar(char c, FILE *f){
-	PORTB |=(1<<PB0);
-	//_delay_ms(650);
-	while (!( UCSR0A & (1<<UDRE0))); // (wait for UDR to be ready)
+int UART_putchar(char c, FILE *f) {
+	//Wait for empty transmit buffer
+	while (!(UCSR0A & (1<<UDRE0)));
+	
+	//Put data into buffer
 	UDR0 = c;
-	PORTB &= ~(1<<PB0); // blinking led for transmitted char
-	//_delay_ms(650);
+
 	return 0;
 }
 
-unsigned char uart_recchar(){
-	while (!(UCSR0A & (1<<RXC0))); //wait for data to be recived and udr to be ready
+unsigned char UART_recchar(void) {
+	//Wait for data to be received
+	while (!(UCSR0A & (1<<RXC0)));
+	
+	//Return data
 	return UDR0;	
-};
+}
 
-void uart_print(char * str){
+int UART_print(char * str){
 	int i = 0;
 	while (str[i] != 0x00){
-		uart_putchar(str[i],uart);
+		UART_putchar(str[i],uart);
 		i++;
 	}
+	return 0;
 }

@@ -1,7 +1,8 @@
-#ifndef _SRAM_H_
-#define _SRAM_H_
+#ifndef SRAM_H_
+#define SRAM_H_
 
-void initSRAM();
-void SRAM_test();
+int SRAM_init(void);
+int SRAM_write(unsigned int address, unsigned int data);
+void SRAM_test(void);
 
 #endif
