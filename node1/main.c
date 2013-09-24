@@ -30,7 +30,8 @@ int main(void) {
 	slider_position slider_pos;*/
 
 	/*TEST OLED*/
-	OLED_init();	
+	OLED_init();
+	OLED_print('c');
 
 	while(1) {
 		/*printf("Button = %i\n\r", JOY_button(0));
@@ -44,8 +45,7 @@ int main(void) {
 		slider_pos = JOY_getSliderPosition();
 		printf("Slider L = %i\n\r", slider_pos.left);
 		printf("Slider R = %i\n\r", slider_pos.right);*/
-
 		
-		_delay_ms(500);
+		_delay_ms(1000);
     }
 }
