@@ -5,9 +5,9 @@
 #include "oled.h"
 
 //Address for the OLED commands
-#define volatile char *OLED_cmd = (char *) 0x1000;
+volatile char *OLED_cmd = (char *) 0x1000;
 //Address for the OLED data
-#define volatile char *OLED_data = (char *) 0x1200;
+volatile char *OLED_data = (char *) 0x1200;
 
 int OLED_init(void) {
 	//Enable the external memory interface/4 bits address
@@ -62,15 +62,16 @@ int OLED_init(void) {
 	//display on
 	*OLED_cmd = 0xAF; 
 	
+	//Set page start address
+	*OLED_cmd = 0xB0;
 	//Set lower column start address
 	*OLED_cmd = 0x00;
 	//Set higher column start address
 	*OLED_cmd = 0x10;
-	//Set page start address
-	*OLED_cmd = 0xB0;
 	
 	//Clear the display
 	OLED_clear();
+	OLED_home();
 
 	return 0;
 }
@@ -87,71 +88,83 @@ int OLED_goto_line(int line) {
 	//Set higher column address
 	*OLED_cmd = 0x10;
 	//Set page address
+	
 	if (line < 8) {
+		*OLED_cmd = 0xB0;
 		*OLED_cmd = 0xB0 | line;
-	} else {
+	} else { //maybe create a wrap around instead of returning 1 can be done by line%8 i think
 		return 1;
 	}
-	
+
 	return 0;
+}
+
+int OLED_home(){
+	*OLED_cmd = 0x21;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x7f;
+	
+	*OLED_cmd = 0x22;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x0f;
 }
 
 int OLED_clear_line(int line) {
 	//Set page address
-	int r = OLED_goto_line(line);
+	OLED_goto_line(line);
 	
 	//Clear the page
-	if (r == 0) {
-		for (int j = 0; j < 16; j++) {
-			for(int i = 0; i < 8; i++) {
-				*OLED_data = pgm_read_byte(&font[0][i]);
-			}
-		}
-	} else {
-		return 1;
-	}
-	
+	for(int i = 0; i < 128 ; i++) {
+		*OLED_data=0;
+	}	
 	return 0;
+	OLED_home();
 }
 
 int OLED_pos(int row, int column) {
-	//Set column
+
+	OLED_goto_line(row);
+	
 	if (column < 16) {
-		uint8_t col = column * 8;
+		//uint8_t col = (column * FONTWIDTH);
 		//Set lower column start address
-		*OLED_cmd = (col | 0x00);
+		
+		//*OLED_cmd = 0x00; //+ column*FONTWIDTH;
 
 		//Set higher column start address
-		*OLED_cmd = (col | (1<<4))
+		//*OLED_cmd = (col | (1<<4));
+		*OLED_cmd = 0x10  + (column*FONTWIDTH >> 4);
 	}
-	
-	//Set row
-	if (row < 8) {
-		//Set page address
-		*OLED_cmd = 0xB0 | row;
-	}
-	
 	return 0;
 }
 
-int OLED_write_char(char c) {
+int OLED_print_char(char c) {
 	
 	//Write the complete character (8x8)
 	for(int i = 0; i < FONTWIDTH; i++) {
 		*OLED_data = pgm_read_byte(&font[c-' '][i]);
 	}
-	
 	return 0;
 }
 
 int OLED_print(char *data) {
 	int i = 0;
 	
-	//Write the string
-	while (data[i] > 0x1F && data[i] < 0x7F){
+	//Write the string(while (data[i] != 
+	//while (data[i] > 0x1F && data[i] < 0x7F){
+	while(data[i] != '\0'){
 		OLED_print_char(data[i]);
 		i++;
 	}
-	
 	return 0;
 }
+
+/*
+void OLED_start_scroll(){
+	*OLED_cmd = 0x26;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x05;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x07;
+	*OLED_cmd = 0x2F;
+}*/

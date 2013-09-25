@@ -4,6 +4,7 @@
 #include "adc.h"
 #include "joystick.h"
 #include "oled.h"
+#include "menu.h"
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -30,12 +31,19 @@ int main(void) {
 	slider_position slider_pos;*/
 
 	/*TEST OLED*/
-	OLED_init();
-	OLED_goto_line(0);
-	OLED_printf("0123456789012345");
-	OLED_pos(5,8);
-	OLED_printf("h2");
+OLED_init();
+draw_menu();
 
+
+/*
+
+OLED_goto_line(3);
+OLED_print("h3");
+OLED_goto_line(0);
+OLED_print("h1");*/
+
+
+int i = 0;
 	while(1) {
 		/*printf("Button = %i\n\r", JOY_button(0));
 		printf("Slider Button L = %i\n\r", JOY_button(1));
@@ -49,6 +57,13 @@ int main(void) {
 		printf("Slider L = %i\n\r", slider_pos.left);
 		printf("Slider R = %i\n\r", slider_pos.right);*/
 		
+		/* OLED test*/
+		/*_delay_ms(1000);
+		OLED_goto_line(4);
+		OLED_print("Hi there");
 		_delay_ms(1000);
+		OLED_clear_line(4);
+		*/
+		
     }
 }
