@@ -5,9 +5,9 @@
 #include "oled.h"
 
 //Address for the OLED commands
-volatile char *oled_cm = (char *) 0x1000;
+#define volatile char *OLED_cmdd = (char *) 0x1000;
 //Address for the OLED data
-volatile char *oled_dt = (char *) 0x1200;
+#define volatile char *OLED_data = (char *) 0x1200;
 
 int OLED_init(void) {
 	//Enable the external memory interface/4 bits address
@@ -15,35 +15,54 @@ int OLED_init(void) {
 	SFIOR  |= (1<<XMM2);
 
 	//Setup the OLED display
-	*oled_cm = 0xAE; //display off
-	*oled_cm = 0xA1; //segment remap
-	*oled_cm = 0xDA; //common pads hardware: alternative
-	*oled_cm = 0x12;
-	*oled_cm = 0xC8; //common output scan direction:com63~com0
-	*oled_cm = 0xA8; //multiplex ration mode:63
-	*oled_cm = 0x3F;
-	*oled_cm = 0xD5; //display divide ratio/osc. freq. mode
-	*oled_cm = 0x80;
-	*oled_cm = 0x81; //contrast control
-	*oled_cm = 0x50;
-	*oled_cm = 0xD9; //set pre-charge period
-	*oled_cm = 0x21;
-	*oled_cm = 0x20; //set Memory Addressing Mode
-	*oled_cm = 0x02;
-	*oled_cm = 0xDB; //VCOM deselect level mode
-	*oled_cm = 0x30;
-	*oled_cm = 0xAD; //master configuration
-	*oled_cm = 0x00;
-	*oled_cm = 0xA4; //out follows RAM content
-	*oled_cm = 0xA6; //set normal display
-	*oled_cm = 0xAF; //display on
+	
+	*OLED_cmd = 0xAE; //display off
+	*OLED_cmd = 0xA1; //segment remap
+	
+	//common pads hardware: alternative
+	*OLED_cmd = 0xDA; 
+	*OLED_cmd = 0x12;
+	
+	*OLED_cmd = 0xC8; //common output scan direction:com63~com0
+
+	//multiplex ration mode:63
+	*OLED_cmd = 0xA8; 
+	*OLED_cmd = 0x3F;
+
+	//display divide ratio/osc. freq. mode
+	*OLED_cmd = 0xD5; 
+	*OLED_cmd = 0x80;
+
+	//contrast control
+	*OLED_cmd = 0x81; 
+	*OLED_cmd = 0x50;
+
+	//set pre-charge period
+	*OLED_cmd = 0xD9; 
+	*OLED_cmd = 0x21;
+
+	//set Memory Addressing Mode
+	*OLED_cmd = 0x20; 
+	*OLED_cmd = 0x02;
+
+	//VCOM deselect level mode
+	*OLED_cmd = 0xDB;
+	*OLED_cmd = 0x30;
+
+	//master configuration
+	*OLED_cmd = 0xAD; 
+	*OLED_cmd = 0x00;
+
+	*OLED_cmd = 0xA4; //out follows RAM content
+	*OLED_cmd = 0xA6; //set normal display
+	*OLED_cmd = 0xAF; //display on
 	
 	//Set lower column start address
-	*oled_cm = 0x00;
+	*OLED_cmd = 0x00;
 	//Set higher column start address
-	*oled_cm = 0x10;
+	*OLED_cmd = 0x10;
 	//Set page start address
-	*oled_cm = 0xB0;
+	*OLED_cmd = 0xB0;
 	
 	//Clear the display
 	for (int k = 0; k < 8; k++) {
@@ -55,12 +74,12 @@ int OLED_init(void) {
 
 int OLED_goto_line(int line) {
 	//Set lower column address
-	*oled_cm = 0x00;
+	*OLED_cmd = 0x00;
 	//Set higher column address
-	*oled_cm = 0x10;
+	*OLED_cmd = 0x10;
 	//Set page address
 	if (line < 8) {
-		*oled_cm = 0xB0 | line;
+		*OLED_cmd = 0xB0 | line;
 	} else {
 		return 1;
 	}
@@ -76,7 +95,7 @@ int OLED_clear_line(int line) {
 	if (r == 0) {
 		for (int j = 0; j < 16; j++) {
 			for(int i = 0; i < 8; i++) {
-				*oled_dt = pgm_read_byte(&font[0][i]);
+				*OLED_data = pgm_read_byte(&font[0][i]);
 			}
 		}
 	} else {
@@ -91,32 +110,32 @@ int OLED_pos(int row, int column) {
 	if (column < 16) {
 		uint8_t col = column * 8;
 		//Set lower column start address
-		//*oled_cm = (col & 0x0F);
+		*OLED_cmd = (col | 0x00);
+
 		//Set higher column start address
-		//*oled_cm = (col & 0xF0) | 0x10;
+		*OLED_cmd = (col | (1<<4))
 	}
 	
 	//Set row
 	if (row < 8) {
 		//Set page address
-		*oled_cm = 0xB0 | row;
+		*OLED_cmd = 0xB0 | row;
 	}
 	
 	return 0;
 }
 
-int OLED_print_char(char data) {
-	uint8_t character = data - 32;
+int OLED_write_char(char c) {
 	
 	//Write the complete character (8x8)
-	for(int i = 0; i < 8; i++) {
-		*oled_dt = pgm_read_byte(&font[character][i]);
+	for(int i = 0; i < FONTWIDTH; i++) {
+		*OLED_data = pgm_read_byte(&font[c-' '][i]);
 	}
 	
 	return 0;
 }
 
-int OLED_printf(char *data) {
+int OLED_print(char *data) {
 	int i = 0;
 	
 	//Write the string
