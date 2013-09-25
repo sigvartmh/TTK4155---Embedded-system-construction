@@ -5,7 +5,7 @@
 #include "oled.h"
 
 //Address for the OLED commands
-#define volatile char *OLED_cmdd = (char *) 0x1000;
+#define volatile char *OLED_cmd = (char *) 0x1000;
 //Address for the OLED data
 #define volatile char *OLED_data = (char *) 0x1200;
 
@@ -23,7 +23,8 @@ int OLED_init(void) {
 	*OLED_cmd = 0xDA; 
 	*OLED_cmd = 0x12;
 	
-	*OLED_cmd = 0xC8; //common output scan direction:com63~com0
+	//common output scan direction:com63~com0
+	*OLED_cmd = 0xC8; 
 
 	//multiplex ration mode:63
 	*OLED_cmd = 0xA8; 
@@ -53,9 +54,13 @@ int OLED_init(void) {
 	*OLED_cmd = 0xAD; 
 	*OLED_cmd = 0x00;
 
-	*OLED_cmd = 0xA4; //out follows RAM content
-	*OLED_cmd = 0xA6; //set normal display
-	*OLED_cmd = 0xAF; //display on
+	//out follows RAM content
+	*OLED_cmd = 0xA4; 
+
+	//set normal display
+	*OLED_cmd = 0xA6;
+	//display on
+	*OLED_cmd = 0xAF; 
 	
 	//Set lower column start address
 	*OLED_cmd = 0x00;
@@ -65,11 +70,15 @@ int OLED_init(void) {
 	*OLED_cmd = 0xB0;
 	
 	//Clear the display
+	OLED_clear();
+
+	return 0;
+}
+
+int OLED_clear(){
 	for (int k = 0; k < 8; k++) {
 		OLED_clear_line(k);
 	}
-
-	return 0;
 }
 
 int OLED_goto_line(int line) {

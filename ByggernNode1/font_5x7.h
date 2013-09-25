@@ -1,5 +1,7 @@
 #include <avr/pgmspace.h>
 
+#define FONTWIDTH 7
+
 const unsigned char PROGMEM myfont[95][5] = {
 	{0b00000000,0b00000000,0b00000000,0b00000000,0b00000000}, //   
 	{0b00000000,0b00000000,0b01011110,0b00000000,0b00000000}, // ! 
