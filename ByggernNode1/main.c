@@ -31,10 +31,10 @@ int main(void) {
 
 	/*TEST OLED*/
 	OLED_init();
-	OLED_goto_line(1);
-	OLED_printf("hola");
-	OLED_goto_line(2);
-	OLED_printf("hola");
+	OLED_goto_line(0);
+	OLED_printf("0123456789012345");
+	OLED_pos(5,8);
+	OLED_printf("h2");
 
 	while(1) {
 		/*printf("Button = %i\n\r", JOY_button(0));

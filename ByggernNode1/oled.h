@@ -6,27 +6,26 @@ volatile char *oled_dt;
 
 typedef struct {
 	char *name;
-	menu_item[] items;
 	uint8_t selected;
-} menu;
+} menu_sub_item;
 
 typedef struct {
 	char *name;
-	menu_sub_item[] items;
 	uint8_t selected;
+	menu_sub_item items[];
 } menu_item;
 
 typedef struct {
 	char *name;
-	menu_sub_item[] items;
 	uint8_t selected;
-} menu_sub_item;
+	menu_item items[];
+} menu;
 
 int OLED_init(void);
 //int OLED_home(void);
 int OLED_goto_line(int line);
 int OLED_clear_line(int line);
-//int OLED_pos(int row, int column);
+int OLED_pos(int row, int column);
 int OLED_print_char(char data);
 int OLED_printf(char *data);
 

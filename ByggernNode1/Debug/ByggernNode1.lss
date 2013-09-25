@@ -3,31 +3,31 @@ ByggernNode1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000010  00800100  00000618  0000068c  2**0
+  0 .data         0000001e  00800100  00000638  000006ac  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000618  00000000  00000000  00000074  2**1
+  1 .text         00000638  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .stab         00000cf0  00000000  00000000  0000069c  2**2
+  2 .stab         00000cf0  00000000  00000000  000006cc  2**2
                   CONTENTS, READONLY, DEBUGGING
-  3 .stabstr      00000272  00000000  00000000  0000138c  2**0
+  3 .stabstr      00000272  00000000  00000000  000013bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .comment      0000002f  00000000  00000000  000015fe  2**0
+  4 .comment      0000002f  00000000  00000000  0000162e  2**0
                   CONTENTS, READONLY
-  5 .debug_aranges 00000238  00000000  00000000  0000162d  2**0
+  5 .debug_aranges 00000240  00000000  00000000  0000165d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001d42  00000000  00000000  00001865  2**0
+  6 .debug_info   00001db0  00000000  00000000  0000189d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000fdb  00000000  00000000  000035a7  2**0
+  7 .debug_abbrev 00000ff9  00000000  00000000  0000364d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000014e1  00000000  00000000  00004582  2**0
+  8 .debug_line   000014f6  00000000  00000000  00004646  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000044c  00000000  00000000  00005a64  2**2
+  9 .debug_frame  0000045c  00000000  00000000  00005b3c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000779  00000000  00000000  00005eb0  2**0
+ 10 .debug_str    000007c5  00000000  00000000  00005f98  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000016d9  00000000  00000000  00006629  2**0
+ 11 .debug_loc    000016ff  00000000  00000000  0000675d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000180  00000000  00000000  00007d02  2**0
+ 12 .debug_ranges 00000188  00000000  00000000  00007e5c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -174,18 +174,18 @@ uint8_t ADC_read(uint8_t channel) {
  374:	11 e0       	ldi	r17, 0x01	; 1
  376:	a0 e0       	ldi	r26, 0x00	; 0
  378:	b1 e0       	ldi	r27, 0x01	; 1
- 37a:	e8 e1       	ldi	r30, 0x18	; 24
+ 37a:	e8 e3       	ldi	r30, 0x38	; 56
  37c:	f6 e0       	ldi	r31, 0x06	; 6
  37e:	02 c0       	rjmp	.+4      	; 0x384 <__do_copy_data+0x10>
  380:	05 90       	lpm	r0, Z+
  382:	0d 92       	st	X+, r0
- 384:	a0 31       	cpi	r26, 0x10	; 16
+ 384:	ae 31       	cpi	r26, 0x1E	; 30
  386:	b1 07       	cpc	r27, r17
  388:	d9 f7       	brne	.-10     	; 0x380 <__do_copy_data+0xc>
 
 0000038a <__do_clear_bss>:
  38a:	21 e0       	ldi	r18, 0x01	; 1
- 38c:	a0 e1       	ldi	r26, 0x10	; 16
+ 38c:	ae e1       	ldi	r26, 0x1E	; 30
  38e:	b1 e0       	ldi	r27, 0x01	; 1
  390:	01 c0       	rjmp	.+2      	; 0x394 <.do_clear_bss_start>
 
@@ -193,463 +193,490 @@ uint8_t ADC_read(uint8_t channel) {
  392:	1d 92       	st	X+, r1
 
 00000394 <.do_clear_bss_start>:
- 394:	a0 31       	cpi	r26, 0x10	; 16
+ 394:	ae 31       	cpi	r26, 0x1E	; 30
  396:	b2 07       	cpc	r27, r18
  398:	e1 f7       	brne	.-8      	; 0x392 <.do_clear_bss_loop>
  39a:	0e 94 d3 01 	call	0x3a6	; 0x3a6 <main>
- 39e:	0c 94 0a 03 	jmp	0x614	; 0x614 <_exit>
+ 39e:	0c 94 1a 03 	jmp	0x634	; 0x634 <_exit>
 
 000003a2 <__bad_interrupt>:
  3a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000003a6 <main>:
- 3a6:	0e 94 2e 02 	call	0x45c	; 0x45c <OLED_init>
- 3aa:	81 e0       	ldi	r24, 0x01	; 1
+ 3a6:	0e 94 31 02 	call	0x462	; 0x462 <OLED_init>
+ 3aa:	80 e0       	ldi	r24, 0x00	; 0
  3ac:	90 e0       	ldi	r25, 0x00	; 0
- 3ae:	0e 94 ef 01 	call	0x3de	; 0x3de <OLED_goto_line>
+ 3ae:	0e 94 f1 01 	call	0x3e2	; 0x3e2 <OLED_goto_line>
  3b2:	8a e0       	ldi	r24, 0x0A	; 10
  3b4:	91 e0       	ldi	r25, 0x01	; 1
- 3b6:	0e 94 f5 02 	call	0x5ea	; 0x5ea <OLED_printf>
+ 3b6:	0e 94 05 03 	call	0x60a	; 0x60a <OLED_printf>
 
 	/*TEST OLED*/
 	OLED_init();
-	OLED_goto_line(1);
-	OLED_printf("hola");
-	OLED_goto_line(2);
- 3ba:	82 e0       	ldi	r24, 0x02	; 2
- 3bc:	90 e0       	ldi	r25, 0x00	; 0
- 3be:	0e 94 ef 01 	call	0x3de	; 0x3de <OLED_goto_line>
-	OLED_printf("hola");
- 3c2:	8a e0       	ldi	r24, 0x0A	; 10
- 3c4:	91 e0       	ldi	r25, 0x01	; 1
- 3c6:	0e 94 f5 02 	call	0x5ea	; 0x5ea <OLED_printf>
+	OLED_goto_line(0);
+	OLED_printf("0123456789012345");
+	OLED_pos(5,8);
+ 3ba:	68 e0       	ldi	r22, 0x08	; 8
+ 3bc:	70 e0       	ldi	r23, 0x00	; 0
+ 3be:	85 e0       	ldi	r24, 0x05	; 5
+ 3c0:	90 e0       	ldi	r25, 0x00	; 0
+ 3c2:	0e 94 db 02 	call	0x5b6	; 0x5b6 <OLED_pos>
+	OLED_printf("h2");
+ 3c6:	8b e1       	ldi	r24, 0x1B	; 27
+ 3c8:	91 e0       	ldi	r25, 0x01	; 1
+ 3ca:	0e 94 05 03 	call	0x60a	; 0x60a <OLED_printf>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 3ca:	21 e3       	ldi	r18, 0x31	; 49
- 3cc:	80 e0       	ldi	r24, 0x00	; 0
- 3ce:	9f e0       	ldi	r25, 0x0F	; 15
- 3d0:	21 50       	subi	r18, 0x01	; 1
- 3d2:	80 40       	sbci	r24, 0x00	; 0
- 3d4:	90 40       	sbci	r25, 0x00	; 0
- 3d6:	e1 f7       	brne	.-8      	; 0x3d0 <main+0x2a>
- 3d8:	00 c0       	rjmp	.+0      	; 0x3da <main+0x34>
- 3da:	00 00       	nop
- 3dc:	f6 cf       	rjmp	.-20     	; 0x3ca <main+0x24>
+ 3ce:	21 e3       	ldi	r18, 0x31	; 49
+ 3d0:	80 e0       	ldi	r24, 0x00	; 0
+ 3d2:	9f e0       	ldi	r25, 0x0F	; 15
+ 3d4:	21 50       	subi	r18, 0x01	; 1
+ 3d6:	80 40       	sbci	r24, 0x00	; 0
+ 3d8:	90 40       	sbci	r25, 0x00	; 0
+ 3da:	e1 f7       	brne	.-8      	; 0x3d4 <main+0x2e>
+ 3dc:	00 c0       	rjmp	.+0      	; 0x3de <main+0x38>
+ 3de:	00 00       	nop
+ 3e0:	f6 cf       	rjmp	.-20     	; 0x3ce <main+0x28>
 
-000003de <OLED_goto_line>:
+000003e2 <OLED_goto_line>:
 	return 0;
 }
 
 int OLED_goto_line(int line) {
-	//Set lower column start address
+	//Set lower column address
 	*oled_cm = 0x00;
- 3de:	e0 91 08 01 	lds	r30, 0x0108
- 3e2:	f0 91 09 01 	lds	r31, 0x0109
- 3e6:	10 82       	st	Z, r1
-	//Set higher column start address
+ 3e2:	e0 91 08 01 	lds	r30, 0x0108
+ 3e6:	f0 91 09 01 	lds	r31, 0x0109
+ 3ea:	10 82       	st	Z, r1
+	//Set higher column address
 	*oled_cm = 0x10;
- 3e8:	e0 91 08 01 	lds	r30, 0x0108
- 3ec:	f0 91 09 01 	lds	r31, 0x0109
- 3f0:	20 e1       	ldi	r18, 0x10	; 16
- 3f2:	20 83       	st	Z, r18
+ 3ec:	e0 91 08 01 	lds	r30, 0x0108
+ 3f0:	f0 91 09 01 	lds	r31, 0x0109
+ 3f4:	20 e1       	ldi	r18, 0x10	; 16
+ 3f6:	20 83       	st	Z, r18
 	//Set page address
 	if (line < 8) {
- 3f4:	88 30       	cpi	r24, 0x08	; 8
- 3f6:	91 05       	cpc	r25, r1
- 3f8:	4c f4       	brge	.+18     	; 0x40c <OLED_goto_line+0x2e>
-		*oled_cm = 0xB0 + line;	
- 3fa:	e0 91 08 01 	lds	r30, 0x0108
- 3fe:	f0 91 09 01 	lds	r31, 0x0109
- 402:	80 55       	subi	r24, 0x50	; 80
- 404:	80 83       	st	Z, r24
+ 3f8:	88 30       	cpi	r24, 0x08	; 8
+ 3fa:	91 05       	cpc	r25, r1
+ 3fc:	54 f4       	brge	.+20     	; 0x412 <OLED_goto_line+0x30>
+		*oled_cm = 0xB0 | line;
+ 3fe:	e0 91 08 01 	lds	r30, 0x0108
+ 402:	f0 91 09 01 	lds	r31, 0x0109
+ 406:	80 6b       	ori	r24, 0xB0	; 176
+ 408:	9f 6f       	ori	r25, 0xFF	; 255
+ 40a:	80 83       	st	Z, r24
 	} else {
 		return 1;
 	}
 	
 	return 0;
- 406:	20 e0       	ldi	r18, 0x00	; 0
- 408:	30 e0       	ldi	r19, 0x00	; 0
- 40a:	02 c0       	rjmp	.+4      	; 0x410 <OLED_goto_line+0x32>
+ 40c:	20 e0       	ldi	r18, 0x00	; 0
+ 40e:	30 e0       	ldi	r19, 0x00	; 0
+ 410:	02 c0       	rjmp	.+4      	; 0x416 <OLED_goto_line+0x34>
 	*oled_cm = 0x10;
 	//Set page address
 	if (line < 8) {
-		*oled_cm = 0xB0 + line;	
+		*oled_cm = 0xB0 | line;
 	} else {
 		return 1;
- 40c:	21 e0       	ldi	r18, 0x01	; 1
- 40e:	30 e0       	ldi	r19, 0x00	; 0
+ 412:	21 e0       	ldi	r18, 0x01	; 1
+ 414:	30 e0       	ldi	r19, 0x00	; 0
 	}
 	
 	return 0;
 }
- 410:	82 2f       	mov	r24, r18
- 412:	93 2f       	mov	r25, r19
- 414:	08 95       	ret
+ 416:	82 2f       	mov	r24, r18
+ 418:	93 2f       	mov	r25, r19
+ 41a:	08 95       	ret
 
-00000416 <OLED_clear_line>:
+0000041c <OLED_clear_line>:
 
 int OLED_clear_line(int line) {
 	//Set page address
 	int r = OLED_goto_line(line);
- 416:	0e 94 ef 01 	call	0x3de	; 0x3de <OLED_goto_line>
+ 41c:	0e 94 f1 01 	call	0x3e2	; 0x3e2 <OLED_goto_line>
 	
 	//Clear the page
 	if (r == 0) {
- 41a:	89 2b       	or	r24, r25
- 41c:	a1 f0       	breq	.+40     	; 0x446 <OLED_clear_line+0x30>
+ 420:	89 2b       	or	r24, r25
+ 422:	a1 f0       	breq	.+40     	; 0x44c <OLED_clear_line+0x30>
 			for(int i = 0; i < 8; i++) {
 				*oled_dt = pgm_read_byte(&font[0][i]);
 			}
 		}
 	} else {
 		return 1;
- 41e:	21 e0       	ldi	r18, 0x01	; 1
- 420:	30 e0       	ldi	r19, 0x00	; 0
- 422:	19 c0       	rjmp	.+50     	; 0x456 <OLED_clear_line+0x40>
+ 424:	21 e0       	ldi	r18, 0x01	; 1
+ 426:	30 e0       	ldi	r19, 0x00	; 0
+ 428:	19 c0       	rjmp	.+50     	; 0x45c <OLED_clear_line+0x40>
 	
 	//Clear the page
 	if (r == 0) {
 		for (int j = 0; j < 16; j++) {
 			for(int i = 0; i < 8; i++) {
 				*oled_dt = pgm_read_byte(&font[0][i]);
- 424:	a0 91 06 01 	lds	r26, 0x0106
- 428:	b0 91 07 01 	lds	r27, 0x0107
- 42c:	fc 01       	movw	r30, r24
- 42e:	e0 59       	subi	r30, 0x90	; 144
- 430:	ff 4f       	sbci	r31, 0xFF	; 255
- 432:	e4 91       	lpm	r30, Z
- 434:	ec 93       	st	X, r30
+ 42a:	a0 91 06 01 	lds	r26, 0x0106
+ 42e:	b0 91 07 01 	lds	r27, 0x0107
+ 432:	fc 01       	movw	r30, r24
+ 434:	e0 59       	subi	r30, 0x90	; 144
+ 436:	ff 4f       	sbci	r31, 0xFF	; 255
+ 438:	e4 91       	lpm	r30, Z
+ 43a:	ec 93       	st	X, r30
 	int r = OLED_goto_line(line);
 	
 	//Clear the page
 	if (r == 0) {
 		for (int j = 0; j < 16; j++) {
 			for(int i = 0; i < 8; i++) {
- 436:	01 96       	adiw	r24, 0x01	; 1
- 438:	88 30       	cpi	r24, 0x08	; 8
- 43a:	91 05       	cpc	r25, r1
- 43c:	99 f7       	brne	.-26     	; 0x424 <OLED_clear_line+0xe>
- 43e:	21 50       	subi	r18, 0x01	; 1
- 440:	31 09       	sbc	r19, r1
+ 43c:	01 96       	adiw	r24, 0x01	; 1
+ 43e:	88 30       	cpi	r24, 0x08	; 8
+ 440:	91 05       	cpc	r25, r1
+ 442:	99 f7       	brne	.-26     	; 0x42a <OLED_clear_line+0xe>
+ 444:	21 50       	subi	r18, 0x01	; 1
+ 446:	31 09       	sbc	r19, r1
 	//Set page address
 	int r = OLED_goto_line(line);
 	
 	//Clear the page
 	if (r == 0) {
 		for (int j = 0; j < 16; j++) {
- 442:	29 f4       	brne	.+10     	; 0x44e <OLED_clear_line+0x38>
- 444:	06 c0       	rjmp	.+12     	; 0x452 <OLED_clear_line+0x3c>
+ 448:	29 f4       	brne	.+10     	; 0x454 <OLED_clear_line+0x38>
+ 44a:	06 c0       	rjmp	.+12     	; 0x458 <OLED_clear_line+0x3c>
 int OLED_clear_line(int line) {
 	//Set page address
 	int r = OLED_goto_line(line);
 	
 	//Clear the page
 	if (r == 0) {
- 446:	20 e1       	ldi	r18, 0x10	; 16
- 448:	30 e0       	ldi	r19, 0x00	; 0
+ 44c:	20 e1       	ldi	r18, 0x10	; 16
+ 44e:	30 e0       	ldi	r19, 0x00	; 0
 	}
 	
 	return 0;
 }
 
 int OLED_clear_line(int line) {
- 44a:	40 e0       	ldi	r20, 0x00	; 0
- 44c:	50 e0       	ldi	r21, 0x00	; 0
- 44e:	ca 01       	movw	r24, r20
- 450:	e9 cf       	rjmp	.-46     	; 0x424 <OLED_clear_line+0xe>
+ 450:	40 e0       	ldi	r20, 0x00	; 0
+ 452:	50 e0       	ldi	r21, 0x00	; 0
+ 454:	ca 01       	movw	r24, r20
+ 456:	e9 cf       	rjmp	.-46     	; 0x42a <OLED_clear_line+0xe>
 		}
 	} else {
 		return 1;
 	}
 	
 	return 0;
- 452:	20 e0       	ldi	r18, 0x00	; 0
- 454:	30 e0       	ldi	r19, 0x00	; 0
+ 458:	20 e0       	ldi	r18, 0x00	; 0
+ 45a:	30 e0       	ldi	r19, 0x00	; 0
 }
- 456:	82 2f       	mov	r24, r18
- 458:	93 2f       	mov	r25, r19
- 45a:	08 95       	ret
+ 45c:	82 2f       	mov	r24, r18
+ 45e:	93 2f       	mov	r25, r19
+ 460:	08 95       	ret
 
-0000045c <OLED_init>:
+00000462 <OLED_init>:
 //Address for the OLED commands
 volatile char *oled_cm = (char *) 0x1000;
 //Address for the OLED data
 volatile char *oled_dt = (char *) 0x1200;
 
 int OLED_init(void) {
- 45c:	cf 93       	push	r28
- 45e:	df 93       	push	r29
+ 462:	cf 93       	push	r28
+ 464:	df 93       	push	r29
 	//Enable the external memory interface/4 bits address
 	MCUCR  |= (1<<SRE);
- 460:	85 b7       	in	r24, 0x35	; 53
- 462:	80 68       	ori	r24, 0x80	; 128
- 464:	85 bf       	out	0x35, r24	; 53
+ 466:	85 b7       	in	r24, 0x35	; 53
+ 468:	80 68       	ori	r24, 0x80	; 128
+ 46a:	85 bf       	out	0x35, r24	; 53
 	SFIOR  |= (1<<XMM2);
- 466:	80 b7       	in	r24, 0x30	; 48
- 468:	80 62       	ori	r24, 0x20	; 32
- 46a:	80 bf       	out	0x30, r24	; 48
+ 46c:	80 b7       	in	r24, 0x30	; 48
+ 46e:	80 62       	ori	r24, 0x20	; 32
+ 470:	80 bf       	out	0x30, r24	; 48
 
 	//Setup the OLED display
 	*oled_cm = 0xAE; //display off
- 46c:	e0 91 08 01 	lds	r30, 0x0108
- 470:	f0 91 09 01 	lds	r31, 0x0109
- 474:	8e ea       	ldi	r24, 0xAE	; 174
- 476:	80 83       	st	Z, r24
+ 472:	e0 91 08 01 	lds	r30, 0x0108
+ 476:	f0 91 09 01 	lds	r31, 0x0109
+ 47a:	8e ea       	ldi	r24, 0xAE	; 174
+ 47c:	80 83       	st	Z, r24
 	*oled_cm = 0xA1; //segment remap
- 478:	e0 91 08 01 	lds	r30, 0x0108
- 47c:	f0 91 09 01 	lds	r31, 0x0109
- 480:	81 ea       	ldi	r24, 0xA1	; 161
- 482:	80 83       	st	Z, r24
+ 47e:	e0 91 08 01 	lds	r30, 0x0108
+ 482:	f0 91 09 01 	lds	r31, 0x0109
+ 486:	81 ea       	ldi	r24, 0xA1	; 161
+ 488:	80 83       	st	Z, r24
 	*oled_cm = 0xDA; //common pads hardware: alternative
- 484:	e0 91 08 01 	lds	r30, 0x0108
- 488:	f0 91 09 01 	lds	r31, 0x0109
- 48c:	8a ed       	ldi	r24, 0xDA	; 218
- 48e:	80 83       	st	Z, r24
+ 48a:	e0 91 08 01 	lds	r30, 0x0108
+ 48e:	f0 91 09 01 	lds	r31, 0x0109
+ 492:	8a ed       	ldi	r24, 0xDA	; 218
+ 494:	80 83       	st	Z, r24
 	*oled_cm = 0x12;
- 490:	e0 91 08 01 	lds	r30, 0x0108
- 494:	f0 91 09 01 	lds	r31, 0x0109
- 498:	82 e1       	ldi	r24, 0x12	; 18
- 49a:	80 83       	st	Z, r24
+ 496:	e0 91 08 01 	lds	r30, 0x0108
+ 49a:	f0 91 09 01 	lds	r31, 0x0109
+ 49e:	82 e1       	ldi	r24, 0x12	; 18
+ 4a0:	80 83       	st	Z, r24
 	*oled_cm = 0xC8; //common output scan direction:com63~com0
- 49c:	e0 91 08 01 	lds	r30, 0x0108
- 4a0:	f0 91 09 01 	lds	r31, 0x0109
- 4a4:	88 ec       	ldi	r24, 0xC8	; 200
- 4a6:	80 83       	st	Z, r24
+ 4a2:	e0 91 08 01 	lds	r30, 0x0108
+ 4a6:	f0 91 09 01 	lds	r31, 0x0109
+ 4aa:	88 ec       	ldi	r24, 0xC8	; 200
+ 4ac:	80 83       	st	Z, r24
 	*oled_cm = 0xA8; //multiplex ration mode:63
- 4a8:	e0 91 08 01 	lds	r30, 0x0108
- 4ac:	f0 91 09 01 	lds	r31, 0x0109
- 4b0:	88 ea       	ldi	r24, 0xA8	; 168
- 4b2:	80 83       	st	Z, r24
+ 4ae:	e0 91 08 01 	lds	r30, 0x0108
+ 4b2:	f0 91 09 01 	lds	r31, 0x0109
+ 4b6:	88 ea       	ldi	r24, 0xA8	; 168
+ 4b8:	80 83       	st	Z, r24
 	*oled_cm = 0x3F;
- 4b4:	e0 91 08 01 	lds	r30, 0x0108
- 4b8:	f0 91 09 01 	lds	r31, 0x0109
- 4bc:	8f e3       	ldi	r24, 0x3F	; 63
- 4be:	80 83       	st	Z, r24
+ 4ba:	e0 91 08 01 	lds	r30, 0x0108
+ 4be:	f0 91 09 01 	lds	r31, 0x0109
+ 4c2:	8f e3       	ldi	r24, 0x3F	; 63
+ 4c4:	80 83       	st	Z, r24
 	*oled_cm = 0xD5; //display divide ratio/osc. freq. mode
- 4c0:	e0 91 08 01 	lds	r30, 0x0108
- 4c4:	f0 91 09 01 	lds	r31, 0x0109
- 4c8:	85 ed       	ldi	r24, 0xD5	; 213
- 4ca:	80 83       	st	Z, r24
+ 4c6:	e0 91 08 01 	lds	r30, 0x0108
+ 4ca:	f0 91 09 01 	lds	r31, 0x0109
+ 4ce:	85 ed       	ldi	r24, 0xD5	; 213
+ 4d0:	80 83       	st	Z, r24
 	*oled_cm = 0x80;
- 4cc:	e0 91 08 01 	lds	r30, 0x0108
- 4d0:	f0 91 09 01 	lds	r31, 0x0109
- 4d4:	80 e8       	ldi	r24, 0x80	; 128
- 4d6:	80 83       	st	Z, r24
+ 4d2:	e0 91 08 01 	lds	r30, 0x0108
+ 4d6:	f0 91 09 01 	lds	r31, 0x0109
+ 4da:	80 e8       	ldi	r24, 0x80	; 128
+ 4dc:	80 83       	st	Z, r24
 	*oled_cm = 0x81; //contrast control
- 4d8:	e0 91 08 01 	lds	r30, 0x0108
- 4dc:	f0 91 09 01 	lds	r31, 0x0109
- 4e0:	81 e8       	ldi	r24, 0x81	; 129
- 4e2:	80 83       	st	Z, r24
+ 4de:	e0 91 08 01 	lds	r30, 0x0108
+ 4e2:	f0 91 09 01 	lds	r31, 0x0109
+ 4e6:	81 e8       	ldi	r24, 0x81	; 129
+ 4e8:	80 83       	st	Z, r24
 	*oled_cm = 0x50;
- 4e4:	e0 91 08 01 	lds	r30, 0x0108
- 4e8:	f0 91 09 01 	lds	r31, 0x0109
- 4ec:	80 e5       	ldi	r24, 0x50	; 80
- 4ee:	80 83       	st	Z, r24
+ 4ea:	e0 91 08 01 	lds	r30, 0x0108
+ 4ee:	f0 91 09 01 	lds	r31, 0x0109
+ 4f2:	80 e5       	ldi	r24, 0x50	; 80
+ 4f4:	80 83       	st	Z, r24
 	*oled_cm = 0xD9; //set pre-charge period
- 4f0:	e0 91 08 01 	lds	r30, 0x0108
- 4f4:	f0 91 09 01 	lds	r31, 0x0109
- 4f8:	89 ed       	ldi	r24, 0xD9	; 217
- 4fa:	80 83       	st	Z, r24
+ 4f6:	e0 91 08 01 	lds	r30, 0x0108
+ 4fa:	f0 91 09 01 	lds	r31, 0x0109
+ 4fe:	89 ed       	ldi	r24, 0xD9	; 217
+ 500:	80 83       	st	Z, r24
 	*oled_cm = 0x21;
- 4fc:	e0 91 08 01 	lds	r30, 0x0108
- 500:	f0 91 09 01 	lds	r31, 0x0109
- 504:	81 e2       	ldi	r24, 0x21	; 33
- 506:	80 83       	st	Z, r24
+ 502:	e0 91 08 01 	lds	r30, 0x0108
+ 506:	f0 91 09 01 	lds	r31, 0x0109
+ 50a:	81 e2       	ldi	r24, 0x21	; 33
+ 50c:	80 83       	st	Z, r24
 	*oled_cm = 0x20; //set Memory Addressing Mode
- 508:	e0 91 08 01 	lds	r30, 0x0108
- 50c:	f0 91 09 01 	lds	r31, 0x0109
- 510:	80 e2       	ldi	r24, 0x20	; 32
- 512:	80 83       	st	Z, r24
+ 50e:	e0 91 08 01 	lds	r30, 0x0108
+ 512:	f0 91 09 01 	lds	r31, 0x0109
+ 516:	80 e2       	ldi	r24, 0x20	; 32
+ 518:	80 83       	st	Z, r24
 	*oled_cm = 0x02;
- 514:	e0 91 08 01 	lds	r30, 0x0108
- 518:	f0 91 09 01 	lds	r31, 0x0109
- 51c:	82 e0       	ldi	r24, 0x02	; 2
- 51e:	80 83       	st	Z, r24
+ 51a:	e0 91 08 01 	lds	r30, 0x0108
+ 51e:	f0 91 09 01 	lds	r31, 0x0109
+ 522:	82 e0       	ldi	r24, 0x02	; 2
+ 524:	80 83       	st	Z, r24
 	*oled_cm = 0xDB; //VCOM deselect level mode
- 520:	e0 91 08 01 	lds	r30, 0x0108
- 524:	f0 91 09 01 	lds	r31, 0x0109
- 528:	8b ed       	ldi	r24, 0xDB	; 219
- 52a:	80 83       	st	Z, r24
+ 526:	e0 91 08 01 	lds	r30, 0x0108
+ 52a:	f0 91 09 01 	lds	r31, 0x0109
+ 52e:	8b ed       	ldi	r24, 0xDB	; 219
+ 530:	80 83       	st	Z, r24
 	*oled_cm = 0x30;
- 52c:	e0 91 08 01 	lds	r30, 0x0108
- 530:	f0 91 09 01 	lds	r31, 0x0109
- 534:	80 e3       	ldi	r24, 0x30	; 48
- 536:	80 83       	st	Z, r24
+ 532:	e0 91 08 01 	lds	r30, 0x0108
+ 536:	f0 91 09 01 	lds	r31, 0x0109
+ 53a:	80 e3       	ldi	r24, 0x30	; 48
+ 53c:	80 83       	st	Z, r24
 	*oled_cm = 0xAD; //master configuration
- 538:	e0 91 08 01 	lds	r30, 0x0108
- 53c:	f0 91 09 01 	lds	r31, 0x0109
- 540:	8d ea       	ldi	r24, 0xAD	; 173
- 542:	80 83       	st	Z, r24
+ 53e:	e0 91 08 01 	lds	r30, 0x0108
+ 542:	f0 91 09 01 	lds	r31, 0x0109
+ 546:	8d ea       	ldi	r24, 0xAD	; 173
+ 548:	80 83       	st	Z, r24
 	*oled_cm = 0x00;
- 544:	e0 91 08 01 	lds	r30, 0x0108
- 548:	f0 91 09 01 	lds	r31, 0x0109
- 54c:	10 82       	st	Z, r1
+ 54a:	e0 91 08 01 	lds	r30, 0x0108
+ 54e:	f0 91 09 01 	lds	r31, 0x0109
+ 552:	10 82       	st	Z, r1
 	*oled_cm = 0xA4; //out follows RAM content
- 54e:	e0 91 08 01 	lds	r30, 0x0108
- 552:	f0 91 09 01 	lds	r31, 0x0109
- 556:	84 ea       	ldi	r24, 0xA4	; 164
- 558:	80 83       	st	Z, r24
+ 554:	e0 91 08 01 	lds	r30, 0x0108
+ 558:	f0 91 09 01 	lds	r31, 0x0109
+ 55c:	84 ea       	ldi	r24, 0xA4	; 164
+ 55e:	80 83       	st	Z, r24
 	*oled_cm = 0xA6; //set normal display
- 55a:	e0 91 08 01 	lds	r30, 0x0108
- 55e:	f0 91 09 01 	lds	r31, 0x0109
- 562:	86 ea       	ldi	r24, 0xA6	; 166
- 564:	80 83       	st	Z, r24
+ 560:	e0 91 08 01 	lds	r30, 0x0108
+ 564:	f0 91 09 01 	lds	r31, 0x0109
+ 568:	86 ea       	ldi	r24, 0xA6	; 166
+ 56a:	80 83       	st	Z, r24
 	*oled_cm = 0xAF; //display on
- 566:	e0 91 08 01 	lds	r30, 0x0108
- 56a:	f0 91 09 01 	lds	r31, 0x0109
- 56e:	8f ea       	ldi	r24, 0xAF	; 175
- 570:	80 83       	st	Z, r24
-	
-	//Clear the display
-	for (int k = 0; k < 8; k++) {
- 572:	c0 e0       	ldi	r28, 0x00	; 0
- 574:	d0 e0       	ldi	r29, 0x00	; 0
-		OLED_clear_line(k);
- 576:	ce 01       	movw	r24, r28
- 578:	0e 94 0b 02 	call	0x416	; 0x416 <OLED_clear_line>
-	*oled_cm = 0xA4; //out follows RAM content
-	*oled_cm = 0xA6; //set normal display
-	*oled_cm = 0xAF; //display on
-	
-	//Clear the display
-	for (int k = 0; k < 8; k++) {
- 57c:	21 96       	adiw	r28, 0x01	; 1
- 57e:	c8 30       	cpi	r28, 0x08	; 8
- 580:	d1 05       	cpc	r29, r1
- 582:	c9 f7       	brne	.-14     	; 0x576 <__stack+0x77>
-		OLED_clear_line(k);
-	}
+ 56c:	e0 91 08 01 	lds	r30, 0x0108
+ 570:	f0 91 09 01 	lds	r31, 0x0109
+ 574:	8f ea       	ldi	r24, 0xAF	; 175
+ 576:	80 83       	st	Z, r24
 	
 	//Set lower column start address
 	*oled_cm = 0x00;
- 584:	e0 91 08 01 	lds	r30, 0x0108
- 588:	f0 91 09 01 	lds	r31, 0x0109
- 58c:	10 82       	st	Z, r1
+ 578:	e0 91 08 01 	lds	r30, 0x0108
+ 57c:	f0 91 09 01 	lds	r31, 0x0109
+ 580:	10 82       	st	Z, r1
 	//Set higher column start address
 	*oled_cm = 0x10;
- 58e:	e0 91 08 01 	lds	r30, 0x0108
- 592:	f0 91 09 01 	lds	r31, 0x0109
- 596:	80 e1       	ldi	r24, 0x10	; 16
- 598:	80 83       	st	Z, r24
+ 582:	e0 91 08 01 	lds	r30, 0x0108
+ 586:	f0 91 09 01 	lds	r31, 0x0109
+ 58a:	80 e1       	ldi	r24, 0x10	; 16
+ 58c:	80 83       	st	Z, r24
 	//Set page start address
 	*oled_cm = 0xB0;
- 59a:	e0 91 08 01 	lds	r30, 0x0108
- 59e:	f0 91 09 01 	lds	r31, 0x0109
- 5a2:	80 eb       	ldi	r24, 0xB0	; 176
- 5a4:	80 83       	st	Z, r24
+ 58e:	e0 91 08 01 	lds	r30, 0x0108
+ 592:	f0 91 09 01 	lds	r31, 0x0109
+ 596:	80 eb       	ldi	r24, 0xB0	; 176
+ 598:	80 83       	st	Z, r24
+	
+	//Clear the display
+	for (int k = 0; k < 8; k++) {
+ 59a:	c0 e0       	ldi	r28, 0x00	; 0
+ 59c:	d0 e0       	ldi	r29, 0x00	; 0
+		OLED_clear_line(k);
+ 59e:	ce 01       	movw	r24, r28
+ 5a0:	0e 94 0e 02 	call	0x41c	; 0x41c <OLED_clear_line>
+	*oled_cm = 0x10;
+	//Set page start address
+	*oled_cm = 0xB0;
+	
+	//Clear the display
+	for (int k = 0; k < 8; k++) {
+ 5a4:	21 96       	adiw	r28, 0x01	; 1
+ 5a6:	c8 30       	cpi	r28, 0x08	; 8
+ 5a8:	d1 05       	cpc	r29, r1
+ 5aa:	c9 f7       	brne	.-14     	; 0x59e <__stack+0x9f>
+		OLED_clear_line(k);
+	}
 
 	return 0;
 }
- 5a6:	80 e0       	ldi	r24, 0x00	; 0
- 5a8:	90 e0       	ldi	r25, 0x00	; 0
- 5aa:	df 91       	pop	r29
- 5ac:	cf 91       	pop	r28
- 5ae:	08 95       	ret
+ 5ac:	80 e0       	ldi	r24, 0x00	; 0
+ 5ae:	90 e0       	ldi	r25, 0x00	; 0
+ 5b0:	df 91       	pop	r29
+ 5b2:	cf 91       	pop	r28
+ 5b4:	08 95       	ret
 
-000005b0 <OLED_print_char>:
+000005b6 <OLED_pos>:
+		//Set higher column start address
+		//*oled_cm = (col & 0xF0) | 0x10;
+	}
+	
+	//Set row
+	if (row < 8) {
+ 5b6:	88 30       	cpi	r24, 0x08	; 8
+ 5b8:	91 05       	cpc	r25, r1
+ 5ba:	3c f4       	brge	.+14     	; 0x5ca <OLED_pos+0x14>
+		//Set page address
+		*oled_cm = 0xB0 | row;
+ 5bc:	e0 91 08 01 	lds	r30, 0x0108
+ 5c0:	f0 91 09 01 	lds	r31, 0x0109
+ 5c4:	80 6b       	ori	r24, 0xB0	; 176
+ 5c6:	9f 6f       	ori	r25, 0xFF	; 255
+ 5c8:	80 83       	st	Z, r24
+	}
 	
 	return 0;
 }
+ 5ca:	80 e0       	ldi	r24, 0x00	; 0
+ 5cc:	90 e0       	ldi	r25, 0x00	; 0
+ 5ce:	08 95       	ret
+
+000005d0 <OLED_print_char>:
 
 int OLED_print_char(char data) {
 	uint8_t character = data - 32;
- 5b0:	80 52       	subi	r24, 0x20	; 32
+ 5d0:	80 52       	subi	r24, 0x20	; 32
 	
 	//Write the complete character (8x8)
 	for(int i = 0; i < 8; i++) {
- 5b2:	20 e0       	ldi	r18, 0x00	; 0
- 5b4:	30 e0       	ldi	r19, 0x00	; 0
+ 5d2:	20 e0       	ldi	r18, 0x00	; 0
+ 5d4:	30 e0       	ldi	r19, 0x00	; 0
 		*oled_dt = pgm_read_byte(&font[character][i]);
- 5b6:	90 e0       	ldi	r25, 0x00	; 0
- 5b8:	88 0f       	add	r24, r24
- 5ba:	99 1f       	adc	r25, r25
- 5bc:	88 0f       	add	r24, r24
- 5be:	99 1f       	adc	r25, r25
- 5c0:	88 0f       	add	r24, r24
- 5c2:	99 1f       	adc	r25, r25
- 5c4:	a0 91 06 01 	lds	r26, 0x0106
- 5c8:	b0 91 07 01 	lds	r27, 0x0107
- 5cc:	fc 01       	movw	r30, r24
- 5ce:	e2 0f       	add	r30, r18
- 5d0:	f3 1f       	adc	r31, r19
- 5d2:	e0 59       	subi	r30, 0x90	; 144
- 5d4:	ff 4f       	sbci	r31, 0xFF	; 255
- 5d6:	e4 91       	lpm	r30, Z
- 5d8:	ec 93       	st	X, r30
+ 5d6:	90 e0       	ldi	r25, 0x00	; 0
+ 5d8:	88 0f       	add	r24, r24
+ 5da:	99 1f       	adc	r25, r25
+ 5dc:	88 0f       	add	r24, r24
+ 5de:	99 1f       	adc	r25, r25
+ 5e0:	88 0f       	add	r24, r24
+ 5e2:	99 1f       	adc	r25, r25
+ 5e4:	a0 91 06 01 	lds	r26, 0x0106
+ 5e8:	b0 91 07 01 	lds	r27, 0x0107
+ 5ec:	fc 01       	movw	r30, r24
+ 5ee:	e2 0f       	add	r30, r18
+ 5f0:	f3 1f       	adc	r31, r19
+ 5f2:	e0 59       	subi	r30, 0x90	; 144
+ 5f4:	ff 4f       	sbci	r31, 0xFF	; 255
+ 5f6:	e4 91       	lpm	r30, Z
+ 5f8:	ec 93       	st	X, r30
 
 int OLED_print_char(char data) {
 	uint8_t character = data - 32;
 	
 	//Write the complete character (8x8)
 	for(int i = 0; i < 8; i++) {
- 5da:	2f 5f       	subi	r18, 0xFF	; 255
- 5dc:	3f 4f       	sbci	r19, 0xFF	; 255
- 5de:	28 30       	cpi	r18, 0x08	; 8
- 5e0:	31 05       	cpc	r19, r1
- 5e2:	81 f7       	brne	.-32     	; 0x5c4 <OLED_print_char+0x14>
+ 5fa:	2f 5f       	subi	r18, 0xFF	; 255
+ 5fc:	3f 4f       	sbci	r19, 0xFF	; 255
+ 5fe:	28 30       	cpi	r18, 0x08	; 8
+ 600:	31 05       	cpc	r19, r1
+ 602:	81 f7       	brne	.-32     	; 0x5e4 <OLED_print_char+0x14>
 		*oled_dt = pgm_read_byte(&font[character][i]);
 	}
 	
 	return 0;
 }
- 5e4:	80 e0       	ldi	r24, 0x00	; 0
- 5e6:	90 e0       	ldi	r25, 0x00	; 0
- 5e8:	08 95       	ret
+ 604:	80 e0       	ldi	r24, 0x00	; 0
+ 606:	90 e0       	ldi	r25, 0x00	; 0
+ 608:	08 95       	ret
 
-000005ea <OLED_printf>:
+0000060a <OLED_printf>:
 
 int OLED_printf(char *data) {
- 5ea:	cf 93       	push	r28
- 5ec:	df 93       	push	r29
- 5ee:	ec 01       	movw	r28, r24
+ 60a:	cf 93       	push	r28
+ 60c:	df 93       	push	r29
+ 60e:	ec 01       	movw	r28, r24
 	int i = 0;
 	
+	//Write the string
 	while (data[i] > 0x1F && data[i] < 0x7F){
- 5f0:	88 81       	ld	r24, Y
- 5f2:	98 2f       	mov	r25, r24
- 5f4:	90 52       	subi	r25, 0x20	; 32
- 5f6:	9f 35       	cpi	r25, 0x5F	; 95
- 5f8:	40 f4       	brcc	.+16     	; 0x60a <OLED_printf+0x20>
+ 610:	88 81       	ld	r24, Y
+ 612:	98 2f       	mov	r25, r24
+ 614:	90 52       	subi	r25, 0x20	; 32
+ 616:	9f 35       	cpi	r25, 0x5F	; 95
+ 618:	40 f4       	brcc	.+16     	; 0x62a <OLED_printf+0x20>
 	}
 	
 	return 0;
 }
 
 int OLED_printf(char *data) {
- 5fa:	21 96       	adiw	r28, 0x01	; 1
+ 61a:	21 96       	adiw	r28, 0x01	; 1
 	int i = 0;
 	
+	//Write the string
 	while (data[i] > 0x1F && data[i] < 0x7F){
 		OLED_print_char(data[i]);
- 5fc:	0e 94 d8 02 	call	0x5b0	; 0x5b0 <OLED_print_char>
-}
+ 61c:	0e 94 e8 02 	call	0x5d0	; 0x5d0 <OLED_print_char>
 
 int OLED_printf(char *data) {
 	int i = 0;
 	
+	//Write the string
 	while (data[i] > 0x1F && data[i] < 0x7F){
- 600:	89 91       	ld	r24, Y+
- 602:	98 2f       	mov	r25, r24
- 604:	90 52       	subi	r25, 0x20	; 32
- 606:	9f 35       	cpi	r25, 0x5F	; 95
- 608:	c8 f3       	brcs	.-14     	; 0x5fc <OLED_printf+0x12>
+ 620:	89 91       	ld	r24, Y+
+ 622:	98 2f       	mov	r25, r24
+ 624:	90 52       	subi	r25, 0x20	; 32
+ 626:	9f 35       	cpi	r25, 0x5F	; 95
+ 628:	c8 f3       	brcs	.-14     	; 0x61c <OLED_printf+0x12>
 		OLED_print_char(data[i]);
 		i++;
 	}
 	
 	return 0;
- 60a:	80 e0       	ldi	r24, 0x00	; 0
- 60c:	90 e0       	ldi	r25, 0x00	; 0
- 60e:	df 91       	pop	r29
- 610:	cf 91       	pop	r28
- 612:	08 95       	ret
+ 62a:	80 e0       	ldi	r24, 0x00	; 0
+ 62c:	90 e0       	ldi	r25, 0x00	; 0
+ 62e:	df 91       	pop	r29
+ 630:	cf 91       	pop	r28
+ 632:	08 95       	ret
 
-00000614 <_exit>:
- 614:	f8 94       	cli
+00000634 <_exit>:
+ 634:	f8 94       	cli
 
-00000616 <__stop_program>:
- 616:	ff cf       	rjmp	.-2      	; 0x616 <__stop_program>
+00000636 <__stop_program>:
+ 636:	ff cf       	rjmp	.-2      	; 0x636 <__stop_program>

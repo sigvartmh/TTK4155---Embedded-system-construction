@@ -38,29 +38,29 @@ int OLED_init(void) {
 	*oled_cm = 0xA6; //set normal display
 	*oled_cm = 0xAF; //display on
 	
-	//Clear the display
-	for (int k = 0; k < 8; k++) {
-		OLED_clear_line(k);
-	}
-	
 	//Set lower column start address
 	*oled_cm = 0x00;
 	//Set higher column start address
 	*oled_cm = 0x10;
 	//Set page start address
 	*oled_cm = 0xB0;
+	
+	//Clear the display
+	for (int k = 0; k < 8; k++) {
+		OLED_clear_line(k);
+	}
 
 	return 0;
 }
 
 int OLED_goto_line(int line) {
-	//Set lower column start address
+	//Set lower column address
 	*oled_cm = 0x00;
-	//Set higher column start address
+	//Set higher column address
 	*oled_cm = 0x10;
 	//Set page address
 	if (line < 8) {
-		*oled_cm = 0xB0 + line;	
+		*oled_cm = 0xB0 | line;
 	} else {
 		return 1;
 	}
@@ -81,6 +81,25 @@ int OLED_clear_line(int line) {
 		}
 	} else {
 		return 1;
+	}
+	
+	return 0;
+}
+
+int OLED_pos(int row, int column) {
+	//Set column
+	if (column < 16) {
+		uint8_t col = column * 8;
+		//Set lower column start address
+		//*oled_cm = (col & 0x0F);
+		//Set higher column start address
+		//*oled_cm = (col & 0xF0) | 0x10;
+	}
+	
+	//Set row
+	if (row < 8) {
+		//Set page address
+		*oled_cm = 0xB0 | row;
 	}
 	
 	return 0;
