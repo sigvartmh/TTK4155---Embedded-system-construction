@@ -30,8 +30,12 @@ int main(void) {
 	slider_position slider_pos;*/
 
 	/*TEST OLED*/
-	OLED_init();
-	OLED_print('c');
+	//OLED_init();
+	//OLED_print('c');
+	stdout = oled;
+	printf("Hello, World\n");
+	printf("Hello, World\n");
+
 
 	while(1) {
 		/*printf("Button = %i\n\r", JOY_button(0));
