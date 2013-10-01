@@ -50,8 +50,8 @@ int main_menu(int dir, int pos, int select){
 	if(pos < 0){
 		pos = 0;
 	}
-	else if(pos > 6){
-		pos = 5;
+	else if(pos > 5){
+		pos = 4;
 	}
 		
 	if((dir == 1) && (pos != 0)){
@@ -62,7 +62,7 @@ int main_menu(int dir, int pos, int select){
 		OLED_print_char('>');
 		return pos;
 	}		
-	else if((dir == 2) && (pos != 5)){
+	else if((dir == 2) && (pos != 4)){
 		OLED_pos((pos+2),5);
 		OLED_print_char(' ');
 		pos = pos+1;
