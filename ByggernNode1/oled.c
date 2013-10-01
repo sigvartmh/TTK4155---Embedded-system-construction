@@ -115,7 +115,7 @@ int OLED_clear_line(int line) {
 	
 	//Clear the page
 	for(int i = 0; i < 128 ; i++) {
-		*OLED_data=0;
+		*OLED_data=0x00;
 	}	
 	return 0;
 	OLED_home();

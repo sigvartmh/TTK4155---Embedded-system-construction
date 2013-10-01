@@ -1,5 +1,4 @@
-#ifndef MENU_H_
-#define MENU_H_
+#pragma once
 
 typedef struct menu_item
 {
@@ -8,9 +7,37 @@ typedef struct menu_item
 	uint8_t children;
 	struct menu_item *sub_item;
 	struct menu_item *parent;
-	//void *foo (const *void); Function pointer;
+	void *(*foo) (); //Function pointer;
 } menu_t;
 
 void draw_menu();
 
-#endif MENU_H_
+
+*menu_item create_item(uint8_t selected, uint8_t children, menu_t *submenu, menu_t *parent){
+
+	menu_t *new_menu_item =malloc(sizeof(menu_t));
+
+	f(new_menu_item == NULL){
+		fprintf(uart,"Out of memory!!! (create_node)\n");
+		exit(1);
+	}
+
+	new_menu_item -> name = name;
+	new_menu_item -> selected = selected;
+	new_menu_item -> parent = parent;
+	new_menu_item -> sub_item = sub_item;
+
+}
+
+sub_item = realloc( NULL , #subitems*sizeof(menu_t) )
+
+
+foo = printf;
+
+
+Menu
+|-submenu
+	|- submenu
+		|-
+|-submenu
+	|- submenu
