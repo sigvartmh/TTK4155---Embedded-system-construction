@@ -15,7 +15,8 @@
     <AssemblyName>ByggernNode1</AssemblyName>
     <Name>ByggernNode1</Name>
     <RootNamespace>ByggernNode1</RootNamespace>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />

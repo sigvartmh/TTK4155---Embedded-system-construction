@@ -26,24 +26,42 @@ int main(void) {
 	uint8_t adc_data;*/
 	
 	/*TEST JOYSTICK*/
-	/*JOY_init();
+JOY_init();
 	joy_position joy_pos;
-	slider_position slider_pos;*/
+	//slider_position slider_pos;
 
 	/*TEST OLED*/
 OLED_init();
+
+
 draw_menu();
+
+
+
 
 
 /*
 
 OLED_goto_line(3);
-OLED_print("h3");
+
 OLED_goto_line(0);
 OLED_print("h1");*/
 
+/*
+ for(int i; i<16; i++){
+	 _delay_ms(300);
+	 OLED_pos(0,i);
+	 _delay_ms(300);
+	 OLED_print_char('=');
+	 
+ }
+*/
 
-int i = 0;
+//OLED_clear_line(0);
+
+//int i = 0;
+int *pos = 0;
+int dir = 0;
 	while(1) {
 		/*printf("Button = %i\n\r", JOY_button(0));
 		printf("Slider Button L = %i\n\r", JOY_button(1));
@@ -56,6 +74,11 @@ int i = 0;
 		slider_pos = JOY_getSliderPosition();
 		printf("Slider L = %i\n\r", slider_pos.left);
 		printf("Slider R = %i\n\r", slider_pos.right);*/
+		
+		joy_pos = JOY_getDirection();
+		dir = joy_pos.dir;
+		_delay_ms(200); 
+		pos = main_menu(dir,pos,JOY_button(0));
 		
 		/* OLED test*/
 		/*_delay_ms(1000);
