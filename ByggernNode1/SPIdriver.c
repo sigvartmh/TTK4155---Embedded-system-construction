@@ -1,7 +1,7 @@
 #include "SPIdriver.h"
 #include <avr/io.h>
 
-//set it as the 
+//Set macros for PINS
 #define SPI_MISO PB6
 #define SPI_MOSI PB5
 #define SPI_SCK PB7

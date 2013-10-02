@@ -92,23 +92,31 @@ int OLED_goto_line(int line) {
 	if (line < 8) {
 		*OLED_cmd = 0xB0;
 		*OLED_cmd = 0xB0 | line;
-	} else { //wrap around
+	} else { 
+
+	//wrap around
+		/*
 		line = line%8;
 		*OLED_cmd = 0xB0;
 		*OLED_cmd = 0xB0 | line;
+		*/
+		return 1;
 	}
 
 	return 0;
 }
 
 int OLED_home(){
-	*OLED_cmd = 0x21;
-	*OLED_cmd = 0x00;
-	*OLED_cmd = 0x7f;
+
+	//Reset column address so it starts on the left-most column on the screen
+	*OLED_cmd = 0x21; //Set addressing mode(i think)
+	*OLED_cmd = 0x00; //set lower column address
+	*OLED_cmd = 0x7f; //select top row
 	
-	*OLED_cmd = 0x22;
-	*OLED_cmd = 0x00;
-	*OLED_cmd = 0x0f;
+	// this was wrong is fixed but don't think it's needed.
+	//*OLED_cmd = 0x22;
+	//*OLED_cmd = 0x00;
+	//*OLED_cmd = 0x7;
 }
 
 int OLED_clear_line(int line) {
