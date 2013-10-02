@@ -7,6 +7,7 @@ typedef struct {
 	int8_t x;
 	int8_t y;
 	char *direction;
+	int8_t dir;
 } joy_position;
 
 typedef struct {

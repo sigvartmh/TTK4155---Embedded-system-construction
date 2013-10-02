@@ -92,8 +92,10 @@ int OLED_goto_line(int line) {
 	if (line < 8) {
 		*OLED_cmd = 0xB0;
 		*OLED_cmd = 0xB0 | line;
-	} else { //maybe create a wrap around instead of returning 1 can be done by line%8 i think
-		return 1;
+	} else { //wrap around
+		line = line%8;
+		*OLED_cmd = 0xB0;
+		*OLED_cmd = 0xB0 | line;
 	}
 
 	return 0;
@@ -122,24 +124,23 @@ int OLED_clear_line(int line) {
 }
 
 int OLED_pos(int row, int column) {
-
+	OLED_home();
 	OLED_goto_line(row);
 	
 	if (column < 16) {
 		//uint8_t col = (column * FONTWIDTH);
 		//Set lower column start address
 		
-		//*OLED_cmd = 0x00; //+ column*FONTWIDTH;
+		*OLED_cmd = 0x00; + (column*(FONTWIDTH) >> 4);
 
 		//Set higher column start address
 		//*OLED_cmd = (col | (1<<4));
-		*OLED_cmd = 0x10  + (column*FONTWIDTH >> 4);
+		*OLED_cmd = 0x10  + (column*(FONTWIDTH)>>4);
 	}
 	return 0;
 }
 
 int OLED_print_char(char c) {
-	
 	//Write the complete character (8x8)
 	for(int i = 0; i < FONTWIDTH; i++) {
 		*OLED_data = pgm_read_byte(&font[c-' '][i]);
