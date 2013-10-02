@@ -2,10 +2,10 @@
 #include <avr/io.h>
 
 //set it as the 
-#define SPI_MISO PB3
-#define SPI_MOSI PB2
-#define SPI_SCK PB1
-#define SPI_SS PB0
+#define SPI_MISO PB6
+#define SPI_MOSI PB5
+#define SPI_SCK PB7
+#define SPI_SS PB4
 
 
 int SPI_init(){ //you can do a shorthand if you want
@@ -21,7 +21,7 @@ int SPI_init(){ //you can do a shorthand if you want
 
 		DDRB &=~(1<<SPI_MISO) //set MISO as input pin PB3
 
-		PORTB |= (1<<SPI_SS); //set SS to 1
+		//set SS to 1
 
 }
 
@@ -39,4 +39,12 @@ char SPI_receive(){
 
 	while(!(SPSR & (1<<SPIF))){} //wait for data to be recived(same as above)
 	return SPDR;
+}
+
+void SPI_selected(){
+	PORTB &= ~(1<<SPI_SS); //(set !SS to 0 which = 1)
+}
+
+void SPI_deselected(){
+	PORTB |= (1<<SPI_SS); //(set !SS to 1 which = 0)
 }
