@@ -15,8 +15,7 @@
     <AssemblyName>ByggernNode1</AssemblyName>
     <Name>ByggernNode1</Name>
     <RootNamespace>ByggernNode1</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
@@ -109,6 +108,18 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mcp2515.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp2515.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="menu.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="oled.c">
       <SubType>compile</SubType>
     </Compile>
@@ -116,6 +127,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="setup.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spi.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sram.c">

@@ -3,8 +3,8 @@
 
 int SRAM_init(void) {
 	//Enable the external memory interface/4 bits address
-	MCUCR  |= (1<<SRE);
-	SFIOR  |= (1<<XMM2);
+	MCUCR |= (1<<SRE);
+	SFIOR |= (1<<XMM2);
 	
 	return 0;
 }

@@ -11,8 +11,8 @@ int JOY_init(void) {
 	ADC_init();
 	
 	//Set button pins to input
-	DDRB &= ~(1 << PINB0) & ~(1 << PINB1) & ~(1 << PINB2);
-	PORTB = (1 << PINB0);
+	DDRB &= ~(1<<PINB0) & ~(1<<PINB1) & ~(1<<PINB2);
+	PORTB |= (1<<PINB0);
 	
 	//Calibrate joystick
 	JOY_calibrate();

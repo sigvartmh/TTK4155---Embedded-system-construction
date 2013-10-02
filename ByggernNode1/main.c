@@ -5,6 +5,8 @@
 #include "joystick.h"
 #include "oled.h"
 #include "menu.h"
+#include "spi.h"
+#include "mcp2515.h"
 #include <avr/io.h>
 #include <util/delay.h>
 
@@ -26,67 +28,28 @@ int main(void) {
 	uint8_t adc_data;*/
 	
 	/*TEST JOYSTICK*/
-JOY_init();
-	joy_position joy_pos;
+	/*JOY_init();
+	joy_position joy_pos;*/
 	//slider_position slider_pos;
 
 	/*TEST OLED*/
-OLED_init();
-
-
-draw_menu();
-
-
-
-
-
-/*
-
-OLED_goto_line(3);
-
-OLED_goto_line(0);
-OLED_print("h1");*/
-
-/*
- for(int i; i<16; i++){
-	 _delay_ms(300);
-	 OLED_pos(0,i);
-	 _delay_ms(300);
-	 OLED_print_char('=');
-	 
- }
-*/
-
-//OLED_clear_line(0);
-
-//int i = 0;
-int *pos = 0;
-int dir = 0;
+	/*OLED_init();
+	draw_menu();
+	int pos = 0;
+	int dir = 0;*/
+	
+	/*TEST SPI*/
+	SPI_init();
+	
 	while(1) {
-		/*printf("Button = %i\n\r", JOY_button(0));
-		printf("Slider Button L = %i\n\r", JOY_button(1));
-		printf("Slider Button R = %i\n\r", JOY_button(2));
-
-		joy_pos = JOY_getPosition();
-		printf("Position X: %i%%\n\r", joy_pos.x);
-		printf("Position Y: %i%%\n\r", joy_pos.y);
-
-		slider_pos = JOY_getSliderPosition();
-		printf("Slider L = %i\n\r", slider_pos.left);
-		printf("Slider R = %i\n\r", slider_pos.right);*/
-		
-		joy_pos = JOY_getDirection();
+		/*joy_pos = JOY_getDirection();
 		dir = joy_pos.dir;
 		_delay_ms(200); 
-		pos = main_menu(dir,pos,JOY_button(0));
+		pos = main_menu(dir,pos,JOY_button(0));*/
 		
-		/* OLED test*/
-		/*_delay_ms(1000);
-		OLED_goto_line(4);
-		OLED_print("Hi there");
-		_delay_ms(1000);
-		OLED_clear_line(4);
-		*/
-		
+		SPI_select();
+		SPI_send('b');
+		SPI_deselect();
+		_delay_ms(1);
     }
 }

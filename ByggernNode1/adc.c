@@ -3,13 +3,12 @@
 #include "setup.h"
 
 int ADC_init(void) {
-	// why is this one needed? Isn't this already setup in sram?
 	//Enable the external memory interface/4 bits address
-	MCUCR  |= (1<<SRE);
-	SFIOR  |= (1<<XMM2);
+	MCUCR |= (1<<SRE);
+	SFIOR |= (1<<XMM2);
 	
 	//Set the interrupt pin to input
-	DDRE &= ~(1 << PINE0);
+	DDRE &= ~(1<<PINE0);
 	
 	return 0;
 }

@@ -11,13 +11,15 @@ volatile char *OLED_data = (char *) 0x1200;
 
 int OLED_init(void) {
 	//Enable the external memory interface/4 bits address
-	MCUCR  |= (1<<SRE);
-	SFIOR  |= (1<<XMM2);
+	MCUCR |= (1<<SRE);
+	SFIOR |= (1<<XMM2);
 
 	//Setup the OLED display
 	
-	*OLED_cmd = 0xAE; //display off
-	*OLED_cmd = 0xA1; //segment remap
+	//display off
+	*OLED_cmd = 0xAE;
+	//segment remap
+	*OLED_cmd = 0xA1;
 	
 	//common pads hardware: alternative
 	*OLED_cmd = 0xDA; 
@@ -76,10 +78,17 @@ int OLED_init(void) {
 	return 0;
 }
 
-int OLED_clear(){
-	for (int k = 0; k < 8; k++) {
-		OLED_clear_line(k);
-	}
+//What does it do?
+int OLED_home(){
+	*OLED_cmd = 0x21;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x7f;
+	
+	*OLED_cmd = 0x22;
+	*OLED_cmd = 0x00;
+	*OLED_cmd = 0x0f;
+	
+	return 0;
 }
 
 int OLED_goto_line(int line) {
@@ -88,35 +97,26 @@ int OLED_goto_line(int line) {
 	//Set higher column address
 	*OLED_cmd = 0x10;
 	//Set page address
-	
 	if (line < 8) {
 		*OLED_cmd = 0xB0;
 		*OLED_cmd = 0xB0 | line;
-	} else { 
-
-	//wrap around
-		/*
-		line = line%8;
-		*OLED_cmd = 0xB0;
-		*OLED_cmd = 0xB0 | line;
-		*/
-		return 1;
 	}
 
 	return 0;
 }
 
-int OLED_home(){
-
-	//Reset column address so it starts on the left-most column on the screen
-	*OLED_cmd = 0x21; //Set addressing mode(i think)
-	*OLED_cmd = 0x00; //set lower column address
-	*OLED_cmd = 0x7f; //select top row
+int OLED_pos(int row, int column) {
+	OLED_home();
+	OLED_goto_line(row);
 	
-	// this was wrong is fixed but don't think it's needed.
-	//*OLED_cmd = 0x22;
-	//*OLED_cmd = 0x00;
-	//*OLED_cmd = 0x7;
+	if (column < 16) {
+		//Set lower column start address
+		*OLED_cmd = 0x00 + (column*(FONTWIDTH)>>4);
+		//Set higher column start address
+		*OLED_cmd = 0x10 + (column*(FONTWIDTH)>>4);
+	}
+	
+	return 0;
 }
 
 int OLED_clear_line(int line) {
@@ -127,29 +127,23 @@ int OLED_clear_line(int line) {
 	for(int i = 0; i < 128 ; i++) {
 		*OLED_data=0x00;
 	}	
-	return 0;
+	
 	OLED_home();
+	
+	return 0;
 }
 
-int OLED_pos(int row, int column) {
-	OLED_home();
-	OLED_goto_line(row);
-	
-	if (column < 16) {
-		//uint8_t col = (column * FONTWIDTH);
-		//Set lower column start address
-		
-		*OLED_cmd = 0x00; + (column*(FONTWIDTH) >> 4);
-
-		//Set higher column start address
-		//*OLED_cmd = (col | (1<<4));
-		*OLED_cmd = 0x10  + (column*(FONTWIDTH)>>4);
+int OLED_clear(){
+	//Clear every page
+	for (int k = 0; k < 8; k++) {
+		OLED_clear_line(k);
 	}
+	
 	return 0;
 }
 
 int OLED_print_char(char c) {
-	//Write the complete character (8x8)
+	//Write the complete character
 	for(int i = 0; i < FONTWIDTH; i++) {
 		*OLED_data = pgm_read_byte(&font[c-' '][i]);
 	}

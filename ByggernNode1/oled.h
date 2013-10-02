@@ -11,7 +11,6 @@ int OLED_pos(int row, int column);
 int OLED_clear_line(int line);
 int OLED_clear();
 
-
 int OLED_print_char(char data);
 int OLED_print(char *data);
 

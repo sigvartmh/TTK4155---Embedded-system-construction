@@ -9,10 +9,10 @@ int UART_init(unsigned int baudrate) {
 	UBRR0H = (unsigned char)(baudrate >> 8);
 	
 	//Enable TX0 and RX0
-	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+	UCSR0B = (1<<RXEN0) | (1<<TXEN0);
 	
 	//Set frame format: 8data, 2stop bit
-	UCSR0C = (1<<URSEL0)|(1<<USBS0)|(3<<UCSZ00);
+	UCSR0C = (1<<URSEL0) | (1<<USBS0) | (3<<UCSZ00);
 	
 	//Connect printf
 	uart = fdevopen(&UART_putchar, &UART_recchar);
