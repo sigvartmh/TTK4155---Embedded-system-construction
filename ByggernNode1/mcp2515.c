@@ -4,7 +4,7 @@
 
 
 int mcp2515_init(void) {
-	//uint8_t value;
+	volatile uint8_t value;
 	
 	//Initialize SPI driver
 	SPI_init();
@@ -13,12 +13,12 @@ int mcp2515_init(void) {
 	mcp2515_reset();
 	
 	//Self-test
-	/*mcp2515_read(MCP_CANSTAT, &value);
+	value = mcp2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
 		printf(”MCP2515 is NOT in configuration mode
 		after reset!\n”);
 		return 1;
-	}*/
+	}
 	// More initialization
 	
 	return 0;
@@ -92,7 +92,7 @@ int mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
 	//Select CAN-controller
 	SPI_select();
 		
-	SPI_send(MCP_BIT_MODIFY);	//Send bit modify command
+	SPI_send(MCP_BITMOD);		//Send bit modify command
 	SPI_send(address);			//Send address
 	SPI_send(mask);				//Send mask byte
 	SPI_send(data);				//Send data
