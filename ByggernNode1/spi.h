@@ -3,8 +3,10 @@
 
 int SPI_init(void);
 int SPI_send(char data);
-uint8_t SPI_read(void);
+
 void SPI_select(void);
 void SPI_deselect(void);
+
+uint8_t SPI_read(void);
 
 #endif

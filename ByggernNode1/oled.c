@@ -86,7 +86,7 @@ int OLED_home(){
 	
 	*OLED_cmd = 0x22;
 	*OLED_cmd = 0x00;
-	*OLED_cmd = 0x0f;
+	*OLED_cmd = 0x7;
 	
 	return 0;
 }
