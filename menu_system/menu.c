@@ -6,6 +6,7 @@ typedef struct menu
 	char *name;
 	struct menu *parent;
 	struct menu *sub_item;
+	int children;
 	void *(*functionPointer)();
 	//void (*functionPointer)(float, char, char) = NULL;
 } menu;
@@ -22,6 +23,7 @@ menu* MENU_create_menu(char *name)
 
     new_menu->name = name;
     new_menu->sub_item = NULL;
+    new_menu->children = NULL;
     new_menu->functionPointer = NULL;
     
     return new_menu;
@@ -31,12 +33,15 @@ void print_string(char* string){
 	printf("%s\n",string );
 }
 
+
 menu* MENU_create_sub_menu(menu *root_menu,int number_of_subitems){
 	root_menu->sub_item = realloc( NULL , number_of_subitems*sizeof(menu));
+	root_menu->children = root_menu->children + number_of_subitems;
 	return root_menu->sub_item;
 }
 
 menu* MENU_insert_sub_menu(menu *root_menu, char *name, int sub_element, void (*functionPointer)()){
+	root_menu->sub_item = realloc( NULL , number_of_subitems*sizeof(menu));
 	root_menu->sub_item[sub_element].name = name;
 	root_menu->sub_item[sub_element].parent = root_menu;
 	root_menu->sub_item[sub_element].functionPointer = (void*)functionPointer;
@@ -61,6 +66,9 @@ int main(){
 	//int i = 0;
 	
 	menu* menu = MENU_create_menu("Menu");
+	MENU_insert_sub_menu(menu, "| - menu 1",0,&print_string);
+	
+	/*
 	MENU_create_sub_menu(menu,3);
 	//MENU_create_sub_menu(menu->sub_item[0].sub_item,3);
 	MENU_insert_sub_menu(menu, "|- menu 1",0, &print_string);
@@ -102,6 +110,7 @@ int main(){
 	menu->sub_item[1].functionPointer("WTF");
 	//menu->sub_item[2].functionPointer(3);
 	//menu->sub_item[0]->sub_item[0].functionPointer(6);
+	*/
 	return 0;
 
 }
