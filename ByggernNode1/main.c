@@ -7,16 +7,18 @@
 #include "menu.h"
 #include "spi.h"
 #include "mcp2515.h"
+#include "can.h"
+
 //#include "can.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 #define MYUBRR F_OSC/16/BAUD-1
 
 int main(void) {
 	/*TEST UART*/
-	UART_init(MYUBRR);
-	char c;
+	//UART_init(MYUBRR);
 	
 	/*TEST SRAM*/
 	/*SRAM_init();
@@ -29,35 +31,31 @@ int main(void) {
 	uint8_t adc_data;*/
 	
 	/*TEST JOYSTICK*/
+/*
 	JOY_init();
 	joy_position joy_pos;
-	slider_position slider_pos;
+	slider_position slider_pos;*/
 
 	/*TEST OLED*/
 	
-	OLED_init();
+	//OLED_init();
+/*
 	draw_menu();
 	int pos = 0;
 	int dir = 0;
-	
+	*/
 	/*TEST SPI*/
-	SPI_init();
-	UART_print("Hello there\n\r");
+	//SPI_init();
+	//UART_print("Hello there\n\r");
 	
 	/*TEST MCP2515*/
 	mcp2515_init();
+	//CAN_init();
+	//SPI_init();
 	
 	while(1) {
-		joy_pos = JOY_getDirection();
-		dir = joy_pos.dir;
-		_delay_ms(200); 
-		pos = main_menu(dir,pos,JOY_button(0));
-		
-		/*SPI_select();
-		SPI_send('b'); //just measure with oscilloscope and see a reasonable signal
-		SPI_deselect();
-		_delay_ms(1);*/
-		
+	mcp2515_write(MCP_CANSTAT,0xff);
+	mcp2515_read(MCP_CANSTAT);
 		
 		
     }
