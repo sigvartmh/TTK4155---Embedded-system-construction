@@ -47,14 +47,14 @@ int CAN_message_send(uint8_t address, CAN_message_t message)
 CAN_message_t* CAN_data_receive(){
 	CAN_message_t* message = malloc(sizeof(CAN_message_t));
 
-	//get message id from recive register
+	//get message id from recive(RX) register
 	message->id  = (uint8_t)(mcp2515_read(MCP_RXB0CTRL+1) << 3);
 	message->id  = (uint8_t)(mcp2515_read(MCP_RXB0CTRL+2) >> 5);
 
-	//get message length from recive register
+	//get message length from recive(RX) register
 	msg->length = (0x0f) & (mcp2515_read(MCP_RXB0CTRL+5));
 
-	//Get message data from recive register
+	//Get message data from recive(RX) register
 	uint8_t i;
 	for(i = 0; i<msg->length; i++){
 		msg->data[i] = mcp2515_read(MCP_RXB0CTRL+6+i); //can probably be done differently and better with bit-shifting
@@ -71,4 +71,5 @@ CAN_message_t* CAN_data_receive(){
 
 int CAN_error(){} // how to detect errors :C
 int CAN_transmit_complete(){} //how to check for the transmission to be complete?
+//guess it can be done by checking if the Tx register is empty=
 int CAN_int_vect(){} //CAN interupt vector
