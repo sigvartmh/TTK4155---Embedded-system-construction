@@ -35,13 +35,13 @@ int CAN_message_send(uint8_t address, CAN_message_t message)
 	//Sends the command to request a sending operation of the message
 	MCP2515_request_to_send(0); // not completely sure if 0 is correct
 	
-	//while(!CAN_transmit_complete){}
+	//while(!CAN_transmit_complete){} //waits until the transmision is complete(not sure if it's legit)
 
 	//if(CAN_error){
 	//	return -1; // maybe add error handling by trying to resend message?
 	//}
 
-	return 1;
+	return 0;
 }
 
 CAN_message_t* CAN_data_receive(){
