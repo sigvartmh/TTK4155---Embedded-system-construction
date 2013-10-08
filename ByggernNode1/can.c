@@ -1,11 +1,6 @@
 #include <avr/io.h>
 #include "mcp2515.h"
-
-typedef struct {
-	unsigned int ID;
-	uint8_t data[8];
-	uint8_t length;
-} CAN_message_t;
+#include "can.h"
 
 int CAN_init(void){
 	
@@ -40,6 +35,13 @@ int CAN_message_send(uint8_t address, CAN_message_t message)
 	//Sends the command to request a sending operation of the message
 	MCP2515_request_to_send(0); // not completely sure if 0 is correct
 	
+	//while(!CAN_transmit_complete){}
+
+	//if(CAN_error){
+	//	return -1; // maybe add error handling by trying to resend message?
+	//}
+
+	return 1;
 }
 
 CAN_message_t* CAN_data_receive(){
@@ -58,13 +60,15 @@ CAN_message_t* CAN_data_receive(){
 		msg->data[i] = mcp2515_read(MCP_RXB0CTRL+6+i); //can probably be done differently and better with bit-shifting
 	}
 
+
+
 	//need some interupt maybe to trigger a recive notification
+	//At least we need some way to check if the message has been recived
 	//mcp2515_bit_modify(MCP_CANINTF,0x01,0x00);//set INT1
 
 	/*	maybe MCP_TX01_INT is also something to look into */
 }
 
-int CAN_error(){}
-int CAN_transmit_complete(){}
-
-int CAN_int_vect(){} //can interupt vector
+int CAN_error(){} // how to detect errors :C
+int CAN_transmit_complete(){} //how to check for the transmission to be complete?
+int CAN_int_vect(){} //CAN interupt vector
