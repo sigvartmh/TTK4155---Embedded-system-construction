@@ -54,6 +54,14 @@ int mcp2515_write(uint8_t address, uint8_t data) {
 }
 
 int mcp2515_request_to_send(uint8_t command) {
+	/* I'm a bit unsure if this one actually works 
+	(based on the define file you got 0x81(will work))
+	0x82(will also work), 0x83(is nothing?), 0x84 will work
+	0x87(selects all) so isn't there only 4 valid commands?
+	Haven't looked through this section as it was already written
+	I'll maybe have a look later on.
+	*/
+
 	//Check the last three bits for the commands
 	if(command <= 7) {
 		command = MCP_RTS | command;

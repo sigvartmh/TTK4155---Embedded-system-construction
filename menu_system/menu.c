@@ -41,7 +41,7 @@ menu* MENU_create_sub_menu(menu *root_menu,int number_of_subitems){
 }
 
 menu* MENU_insert_sub_menu(menu *root_menu, char *name, int sub_element, void (*functionPointer)()){
-	root_menu->sub_item = realloc( NULL , number_of_subitems*sizeof(menu));
+	//root_menu->sub_item = realloc( NULL , number_of_subitems*sizeof(menu));
 	root_menu->sub_item[sub_element].name = name;
 	root_menu->sub_item[sub_element].parent = root_menu;
 	root_menu->sub_item[sub_element].functionPointer = (void*)functionPointer;
@@ -60,6 +60,12 @@ int add(int x){
 	return x;
 }
 
+int main(){
+	menu* menu = MENU_create_menu("Menu");
+	MENU_insert_sub_menu(menu, "| - menu 1",0,&print_string);
+}
+
+/*
 int main(){
 
 	//char *c = "Menu";
@@ -110,7 +116,6 @@ int main(){
 	menu->sub_item[1].functionPointer("WTF");
 	//menu->sub_item[2].functionPointer(3);
 	//menu->sub_item[0]->sub_item[0].functionPointer(6);
-	*/
 	return 0;
 
-}
+}*/
