@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include "uart.h"
 #include "spi.h"
 #include "mcp2515.h"
 
@@ -15,7 +16,7 @@ int mcp2515_init(void) {
 	//Self-test
 	value = mcp2515_read(MCP_CANSTAT);
 	if ((value & MODE_MASK) != MODE_CONFIG) {
-		printf("MCP2515 is NOT in configuration mode after reset!");
+		UART_print("MCP2515 is NOT in configuration mode after reset!");
 		return 1;
 	}
 	// More initialization

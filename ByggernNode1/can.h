@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct {
-	unsigned int ID;
+	unsigned int id;
 	uint8_t data[8];
 	uint8_t length;
 } CAN_message_t;

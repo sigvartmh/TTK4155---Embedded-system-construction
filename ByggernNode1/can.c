@@ -3,9 +3,8 @@
 #include "can.h"
 
 int CAN_init(void){
+	mcp2515_init();
 	
-	mcp2515_inti(void);
-
 	//Enables Loopback mode
 	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 	//Enable Normal mode
@@ -23,17 +22,17 @@ int CAN_message_send(uint8_t address, CAN_message_t message)
 	mcp2515_write(MCP_TXB0CTRL+2,(uint8_t)(message.id<<5));
 	
 	//Set max data length to 8 bit
-	mcp2515_bit_modify(MCP_TXB0CTRL+5,0x0f,msg->length);
+	mcp2515_bit_modify(MCP_TXB0CTRL+5,0x0f,(message.length));
 
 	/* Set CAN data in register */
 	//Writes the data to the transmit control register
 	uint8_t i;
-	for (i = 0; i < msg->length; i++){
-		mcp2515_write(MCP_TXB0CTRL+6+i,message.data[i]));
+	for (i = 0; i < message.length; i++){
+		mcp2515_write(MCP_TXB0CTRL+6+i,(message.data[i]));
 	}
 	
 	//Sends the command to request a sending operation of the message
-	MCP2515_request_to_send(0); // not completely sure if 0 is correct
+	mcp2515_request_to_send(address); // not completely sure if 0 is correct
 	
 	//while(!CAN_transmit_complete){} //waits until the transmision is complete(not sure if it's legit)
 
@@ -52,12 +51,12 @@ CAN_message_t* CAN_data_receive(){
 	message->id  = (uint8_t)(mcp2515_read(MCP_RXB0CTRL+2) >> 5);
 
 	//get message length from recive(RX) register
-	msg->length = (0x0f) & (mcp2515_read(MCP_RXB0CTRL+5));
+	message->length = (0x0f) & (mcp2515_read(MCP_RXB0CTRL+5));
 
 	//Get message data from recive(RX) register
 	uint8_t i;
-	for(i = 0; i<msg->length; i++){
-		msg->data[i] = mcp2515_read(MCP_RXB0CTRL+6+i); //can probably be done differently and better with bit-shifting
+	for(i = 0; i< message->length; i++){
+		message->data[i] = mcp2515_read(MCP_RXB0CTRL+6+i); //can probably be done differently and better with bit-shifting
 	}
 
 
