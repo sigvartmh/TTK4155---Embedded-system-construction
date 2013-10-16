@@ -1,74 +1,106 @@
 #include <avr/io.h>
+#include "setup.h"
 #include "mcp2515.h"
 #include "can.h"
 
-int CAN_init(void){
+int CAN_init(void) {
 	mcp2515_init();
 	
-	//Enables Loopback mode
-	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
-	//Enable Normal mode
+	//Enable normal mode
 	//mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+	
+	//Enable loop back mode
+	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
+	
+	//Enable interrupt when message is sent (TX0IE = 1)
+	mcp2515_bit_modify(MCP_CANINTE, 0x04, 1);
+	
+	//Enable interrupt when message is received (RX0IE = 1)
+	mcp2515_bit_modify(MCP_CANINTE, 0x01, 1);
 
 	return 0;
-	
 }
 
-int CAN_message_send(uint8_t address, CAN_message_t message)
-{
-	/* Sets the CAN id*/
-	//Write the CAN id to the transmit ctrl register
-	mcp2515_write(MCP_TXB0CTRL+1,(uint8_t)(message.id>>3));
-	mcp2515_write(MCP_TXB0CTRL+2,(uint8_t)(message.id<<5));
-	
-	//Set max data length to 8 bit
-	mcp2515_bit_modify(MCP_TXB0CTRL+5,0x0f,(message.length));
-
-	/* Set CAN data in register */
-	//Writes the data to the transmit control register
+int CAN_message_send(CAN_message_t* message) {
 	uint8_t i;
-	for (i = 0; i < message.length; i++){
-		mcp2515_write(MCP_TXB0CTRL+6+i,(message.data[i]));
+	
+	//Check if there is no pending transmission
+	if (CAN_transmit_complete()) {
+		
+		//Set transmit priority (0 - lowest)
+		mcp2515_bit_modify(MCP_TXB0CTRL, 0x03, 0);
+		
+		//Set the message id (use standard identifier)
+		mcp2515_write(MCP_TXB0SIDH, (uint8_t)(message->id >> 3));
+		mcp2515_write(MCP_TXB0SIDL, (uint8_t)(message->id << 5));
+		
+		//Set data length and use data frame (RTR = 0)
+		mcp2515_write(MCP_TXB0DLC, (uint8_t)(message->length << 4));
+
+		//Set data bytes (max. 8 bytes)
+		for (i = 0; i < message->length; i++) {
+			mcp2515_write(MCP_TXB0D0 + i, message->data[i]);
+		}
+		
+		//Request to send via TX0
+		mcp2515_request_to_send(1);
+		
+	} else {
+		//TODO: Check why is there a pending transmission
 	}
 	
-	//Sends the command to request a sending operation of the message
-	mcp2515_request_to_send(address); // not completely sure if 0 is correct
-	
-	//while(!CAN_transmit_complete){} //waits until the transmision is complete(not sure if it's legit)
-
-	//if(CAN_error){
-	//	return -1; // maybe add error handling by trying to resend message?
-	//}
-
 	return 0;
 }
 
-CAN_message_t* CAN_data_receive(){
+int CAN_error(void) {
+	//TODO
+}
+
+
+int CAN_transmit_complete(void) {
+	//Check if TX buffer is not pending transmission (TXREQ = 0)
+	if (test_bit(mcp2515_read(MCP_TXB0CTRL), 3)) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+int CAN_int_vect(void) {
+	//TODO
+}
+
+CAN_message_t* CAN_data_receive(void) {
+	uint8_t i;
 	CAN_message_t* message = malloc(sizeof(CAN_message_t));
-
-	//get message id from recive(RX) register
-	message->id  = (uint8_t)(mcp2515_read(MCP_RXB0CTRL+1) << 3);
-	message->id  = (uint8_t)(mcp2515_read(MCP_RXB0CTRL+2) >> 5);
-
-	//get message length from recive(RX) register
-	message->length = (0x0f) & (mcp2515_read(MCP_RXB0CTRL+5));
-
-	//Get message data from recive(RX) register
-	uint8_t i;
-	for(i = 0; i< message->length; i++){
-		message->data[i] = mcp2515_read(MCP_RXB0CTRL+6+i); //can probably be done differently and better with bit-shifting
+	
+	//Get message id
+	message->id  = (mcp2515_read(MCP_RXB0SIDH) << 3) && (mcp2515_read(MCP_RXB0SIDL) >> 5);
+	//message->id  = (uint8_t)(mcp2515_read(MCP_RXB0SIDH) << 3);
+	//message->id  = (uint8_t)(mcp2515_read(MCP_RXB0SIDL) >> 5);
+	
+	//Get message length
+	message->length = (0x0F) & (mcp2515_read(MCP_RXB0DLC));
+	
+	//Get message data
+	for(i = 0; i < message->length; i++) {
+		message->data[i] = mcp2515_read(MCP_RXB0D0 + i);
 	}
-
-
-
-	//need some interupt maybe to trigger a recive notification
-	//At least we need some way to check if the message has been recived
-	//mcp2515_bit_modify(MCP_CANINTF,0x01,0x00);//set INT1
-
-	/*	maybe MCP_TX01_INT is also something to look into */
+	
+	return message;
 }
 
-int CAN_error(){} // how to detect errors :C
-int CAN_transmit_complete(){} //how to check for the transmission to be complete?
-//guess it can be done by checking if the Tx register is empty=
-int CAN_int_vect(){} //CAN interupt vector
+//uint8_t int_vector;
+	//
+//int_vector = mcp2515_read(MCP_CANINTF);
+	//
+////TX0 interrupt
+//if (test_bit(int_vector, 2)) {
+		//
+	//mcp2515_bit_modify(MCP_CANINTF, 0x04, 0);
+//}
+////RX0 interrupt
+//if (test_bit(int_vector, 0)) {
+	////read data
+	//mcp2515_bit_modify(MCP_CANINTF, 0x01, 0);
+//}

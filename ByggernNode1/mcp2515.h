@@ -1,7 +1,6 @@
 #ifndef MCP2515_H_
 #define MCP2515_H_
 
-
 int mcp2515_init(void);
 int mcp2515_write(uint8_t address, uint8_t data);
 int mcp2515_request_to_send(uint8_t command);
@@ -11,17 +10,9 @@ int mcp2515_reset(void);
 uint8_t mcp2515_read(uint8_t address);
 uint8_t mcp2515_read_status(void);
 
-//SPI instruction set
-//#define MCP_RESET 0xC0			//1100 0000
-//#define MCP_READ 0x03			//0000 0011
-#define MCP_RTS 0x80			//1000 0nnn
-//#define MCP_READ_STATUS 0xA0	//1010 0000
-//#define MCP_BIT_MODIFY 0x05		//0000 0101
-
-//#define MCP_CANCTRL		0x0F
-
 /*
-this file contains constants that are specific to the MCP2515.
+**********************MODIFIED*******************************
+This file contains constants that are specific to the MCP2515.
 
 Version     Date        Description
 ----------------------------------------------------------------------
@@ -31,7 +22,6 @@ Copyright 2003 Kimberly Otten Software Consulting
 */
 
 // Define MCP2515 register addresses
-
 #define MCP_RXF0SIDH	0x00
 #define MCP_RXF0SIDL	0x01
 #define MCP_RXF0EID8	0x02
@@ -74,14 +64,24 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_CANINTE		0x2B
 #define MCP_CANINTF		0x2C
 #define MCP_EFLG		0x2D
+
 #define MCP_TXB0CTRL	0x30
+#define MCP_TXB0SIDH	0x31
+#define MCP_TXB0SIDL	0x32
+#define MCP_TXB0DLC		0x35
+#define MCP_TXB0D0		0x36
+
 #define MCP_TXB1CTRL	0x40
 #define MCP_TXB2CTRL	0x50
+
 #define MCP_RXB0CTRL	0x60
 #define MCP_RXB0SIDH	0x61
+#define MCP_RXB0SIDL	0x62
+#define MCP_RXB0DLC		0x65
+#define MCP_RXB0D0		0x66
+
 #define MCP_RXB1CTRL	0x70
 #define MCP_RXB1SIDH	0x71
-
 
 #define MCP_TX_INT		0x1C		// Enable all transmit interrupts
 #define MCP_TX01_INT	0x0C		// Enable TXB0 and TXB1 interrupts
@@ -92,7 +92,6 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TX_MASK		0x54
 
 // Define SPI Instruction Set
-
 #define MCP_WRITE		0x02
 
 #define MCP_READ		0x03
@@ -103,6 +102,7 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_LOAD_TX1	0x42
 #define MCP_LOAD_TX2	0x44
 
+#define MCP_RTS			0x80
 #define MCP_RTS_TX0		0x81
 #define MCP_RTS_TX1		0x82
 #define MCP_RTS_TX2		0x84
@@ -117,9 +117,7 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 #define MCP_RESET		0xC0
 
-
 // CANCTRL Register Values
-
 #define MODE_NORMAL     0x00
 #define MODE_SLEEP      0x20
 #define MODE_LOOPBACK   0x40
@@ -136,32 +134,24 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define CLKOUT_PS4		0x02
 #define CLKOUT_PS8		0x03
 
-
 // CNF1 Register Values
-
 #define SJW1            0x00
 #define SJW2            0x40
 #define SJW3            0x80
 #define SJW4            0xC0
 
-
 // CNF2 Register Values
-
 #define BTLMODE			0x80
 #define SAMPLE_1X       0x00
 #define SAMPLE_3X       0x40
 
-
 // CNF3 Register Values
-
 #define SOF_ENABLE		0x80
 #define SOF_DISABLE		0x00
 #define WAKFIL_ENABLE	0x40
 #define WAKFIL_DISABLE	0x00
 
-
 // CANINTF Register Bits
-
 #define MCP_RX0IF		0x01
 #define MCP_RX1IF		0x02
 #define MCP_TX0IF		0x04
@@ -170,6 +160,5 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_ERRIF		0x20
 #define MCP_WAKIF		0x40
 #define MCP_MERRF		0x80
-
 
 #endif

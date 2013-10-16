@@ -32,7 +32,6 @@ int SPI_send(char data) {
 
 uint8_t SPI_read(void) {
 	//Send dummy data to read from slave
-	//SPI_send('0');
 	SPI_send(0);
 	
 	//Wait for data to be received

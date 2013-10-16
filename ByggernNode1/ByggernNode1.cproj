@@ -15,8 +15,7 @@
     <AssemblyName>ByggernNode1</AssemblyName>
     <Name>ByggernNode1</Name>
     <RootNamespace>ByggernNode1</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
@@ -91,6 +90,12 @@
     <Compile Include="adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="can.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="can.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="font_4x6.h">
       <SubType>compile</SubType>
     </Compile>
@@ -98,6 +103,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="font_8x8.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="font_mario.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="joystick.c">

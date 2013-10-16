@@ -3,7 +3,6 @@
 #include "spi.h"
 #include "mcp2515.h"
 
-
 int mcp2515_init(void) {
 	volatile uint8_t value;
 	
@@ -19,25 +18,8 @@ int mcp2515_init(void) {
 		UART_print("MCP2515 is NOT in configuration mode after reset!");
 		return 1;
 	}
-	// More initialization
 	
 	return 0;
-}
-
-uint8_t mcp2515_read(uint8_t address) {
-	uint8_t result;
-
-	//Select CAN-controller
-	SPI_select();
-	
-	SPI_send(MCP_READ);		//Send read command
-	SPI_send(address);		//Send address
-	result = SPI_read();	//Read result
-	
-	//Deselect CAN-controller
-	SPI_deselect();
-	
-	return result;
 }
 
 int mcp2515_write(uint8_t address, uint8_t data) {
@@ -55,12 +37,11 @@ int mcp2515_write(uint8_t address, uint8_t data) {
 }
 
 int mcp2515_request_to_send(uint8_t command) {
-	/* I'm a bit unsure if this one actually works 
-	(based on the define file you got 0x81(will work))
-	0x82(will also work), 0x83(is nothing?), 0x84 will work
-	0x87(selects all) so isn't there only 4 valid commands?
-	Haven't looked through this section as it was already written
-	I'll maybe have a look later on.
+	/*	
+	#define MCP_RTS_TX0		0x81 -> command = 1
+	#define MCP_RTS_TX1		0x82 -> command = 2
+	#define MCP_RTS_TX2		0x84 -> command = 4
+	#define MCP_RTS_ALL		0x87 -> command = 7
 	*/
 
 	//Check the last three bits for the commands
@@ -79,21 +60,6 @@ int mcp2515_request_to_send(uint8_t command) {
 	SPI_deselect();
 		
 	return 0;
-}
-
-uint8_t mcp2515_read_status(void) {
-	uint8_t result;
-
-	//Select CAN-controller
-	SPI_select();
-		
-	SPI_send(MCP_READ_STATUS);	//Send read status command
-	result = SPI_read();		//Read result
-		
-	//Deselect CAN-controller
-	SPI_deselect();
-		
-	return result;
 }
 
 int mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
@@ -121,4 +87,35 @@ int mcp2515_reset(void) {
 	SPI_deselect();
 	
 	return 0;
+}
+
+uint8_t mcp2515_read(uint8_t address) {
+	uint8_t result;
+
+	//Select CAN-controller
+	SPI_select();
+	
+	SPI_send(MCP_READ);		//Send read command
+	SPI_send(address);		//Send address
+	result = SPI_read();	//Read result
+	
+	//Deselect CAN-controller
+	SPI_deselect();
+	
+	return result;
+}
+
+uint8_t mcp2515_read_status(void) {
+	uint8_t result;
+
+	//Select CAN-controller
+	SPI_select();
+	
+	SPI_send(MCP_READ_STATUS);	//Send read status command
+	result = SPI_read();		//Read result
+	
+	//Deselect CAN-controller
+	SPI_deselect();
+	
+	return result;
 }
