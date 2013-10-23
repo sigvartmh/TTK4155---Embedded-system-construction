@@ -37,28 +37,17 @@ int mcp2515_write(uint8_t address, uint8_t data) {
 }
 
 int mcp2515_request_to_send(uint8_t command) {
-	/*	
-	#define MCP_RTS_TX0		0x81 -> command = 1
-	#define MCP_RTS_TX1		0x82 -> command = 2
-	#define MCP_RTS_TX2		0x84 -> command = 4
-	#define MCP_RTS_ALL		0x87 -> command = 7
-	*/
-
-	//Check the last three bits for the commands
-	if(command <= 7) {
-		command = MCP_RTS | command;
-	} else {
-		command = MCP_RTS;
-	}
-	
 	//Select CAN-controller
 	SPI_select();
-		
-	SPI_send(command);		//Send RTS command
-		
+	
+	//Check the last three bits for the commands
+	if(command <= 7) {
+		SPI_send(MCP_RTS | (1<<command));
+	} 
+	
 	//Deselect CAN-controller
-	SPI_deselect();
-		
+	SPI_deselect();	
+	
 	return 0;
 }
 
@@ -90,14 +79,12 @@ int mcp2515_reset(void) {
 }
 
 uint8_t mcp2515_read(uint8_t address) {
-	uint8_t result;
-
 	//Select CAN-controller
 	SPI_select();
 	
 	SPI_send(MCP_READ);		//Send read command
 	SPI_send(address);		//Send address
-	result = SPI_read();	//Read result
+	uint8_t result = SPI_read();	//Read result
 	
 	//Deselect CAN-controller
 	SPI_deselect();
@@ -106,13 +93,11 @@ uint8_t mcp2515_read(uint8_t address) {
 }
 
 uint8_t mcp2515_read_status(void) {
-	uint8_t result;
-
 	//Select CAN-controller
 	SPI_select();
 	
 	SPI_send(MCP_READ_STATUS);	//Send read status command
-	result = SPI_read();		//Read result
+	uint8_t result = SPI_read();		//Read result
 	
 	//Deselect CAN-controller
 	SPI_deselect();

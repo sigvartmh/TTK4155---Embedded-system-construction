@@ -12,6 +12,6 @@ int CAN_message_send(CAN_message_t* message);
 int CAN_error(void);
 int CAN_transmit_complete(void);
 int CAN_int_vect(void);
-CAN_message_t* CAN_data_receive(void);
+CAN_message_t* CAN_data_receive(CAN_message_t* message);
 
 #endif

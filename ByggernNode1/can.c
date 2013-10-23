@@ -17,43 +17,59 @@ int CAN_init(void) {
 	
 	//Enable interrupt when message is received (RX0IE = 1)
 	mcp2515_bit_modify(MCP_CANINTE, 0x01, 1);
+	
+	//maybe do something like this instead
+	//mcp2515_bit_modify(MCP_CANINTE, 0x03, 0x03);
+	
+	//Set recive all IDs
+	mcp2515_bit_modify(MCP_CANCTRL,0b11100000, 0x00);
 
 	return 0;
 }
 
 int CAN_message_send(CAN_message_t* message) {
-	uint8_t i;
+	
+	uint8_t status = mcp2515_read_status();
+	
+	//uint8_t buffer = 0;
+	
+	//if((status&(1<<MCP_STATUS_TREQ0)))
 	
 	//Check if there is no pending transmission
-	if (CAN_transmit_complete()) {
+	//if (CAN_transmit_complete()) {
 		
 		//Set transmit priority (0 - lowest)
-		mcp2515_bit_modify(MCP_TXB0CTRL, 0x03, 0);
+		//mcp2515_bit_modify(MCP_TXB0CTRL, 0x03, 0);
 		
 		//Set the message id (use standard identifier)
 		mcp2515_write(MCP_TXB0SIDH, (uint8_t)(message->id >> 3));
 		mcp2515_write(MCP_TXB0SIDL, (uint8_t)(message->id << 5));
 		
 		//Set data length and use data frame (RTR = 0)
-		mcp2515_write(MCP_TXB0DLC, (uint8_t)(message->length << 4));
+		//mcp2515_write(MCP_TXB0DLC, (uint8_t)(message->length << 4));
+		mcp2515_write(MCP_TXB0DLC,(0b00001111 & message->length));
 
 		//Set data bytes (max. 8 bytes)
-		for (i = 0; i < message->length; i++) {
+		for (uint8_t i = 0; i < message->length; i++) {
 			mcp2515_write(MCP_TXB0D0 + i, message->data[i]);
 		}
 		
 		//Request to send via TX0
+		if (status)
+		{
+		}
 		mcp2515_request_to_send(1);
 		
-	} else {
+	//} else {
 		//TODO: Check why is there a pending transmission
-	}
+	//}
 	
 	return 0;
 }
 
 int CAN_error(void) {
 	//TODO
+	return 1;
 }
 
 
@@ -68,11 +84,12 @@ int CAN_transmit_complete(void) {
 
 int CAN_int_vect(void) {
 	//TODO
+	return 0;
 }
 
-CAN_message_t* CAN_data_receive(void) {
+CAN_message_t* CAN_data_receive(CAN_message_t* message) {
 	uint8_t i;
-	CAN_message_t* message = malloc(sizeof(CAN_message_t));
+	//CAN_message_t* message = malloc(sizeof(CAN_message_t));
 	
 	//Get message id
 	message->id  = (mcp2515_read(MCP_RXB0SIDH) << 3) && (mcp2515_read(MCP_RXB0SIDL) >> 5);
@@ -86,6 +103,8 @@ CAN_message_t* CAN_data_receive(void) {
 	for(i = 0; i < message->length; i++) {
 		message->data[i] = mcp2515_read(MCP_RXB0D0 + i);
 	}
+	
+	mcp2515_bit_modify(MCP_CANINTF, 0x01,0x00);
 	
 	return message;
 }
