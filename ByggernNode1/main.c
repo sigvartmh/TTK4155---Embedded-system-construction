@@ -11,12 +11,8 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-
-//retardness
-#include <stdlib.h>
-//end retard
-
 #define MYUBRR F_OSC/16/BAUD-1
+
 
 int main(void) {
 	CAN_message_t message_send;
@@ -29,24 +25,17 @@ int main(void) {
 	printf("CAN initiated\n\r");
 	
 	message_send.id = 3;
-	message_send.length = 1;
-	message_send.data[0] = (uint8_t) 1;
-	CAN_send_message(&message_send,0);
-	printf("Message sent\n\r");
-	
-	_delay_ms(100);
-	
-	message_received = CAN_receive_data(&message_receive);
-	printf("Message id: %i\n\r", message_receive.id);
-	printf("Message length: %i\n\r", message_receive.length);
-	for(int i = 0; i < message_receive.length; i++) {
-		printf("Message data: %i\n\r", message_receive.data[i]);
+	message_send.length = 8;
+	for(uint8_t i=0;i < message_send.length;i++){
+		message_send.data[i] = (uint8_t) 1;
 	}
-	printf("Message id: %i\n\r", message_received->id);
 	
 	while(1) {
-
-	_delay_ms(100);
-
+		
+		CAN_send_message(&message_send,0);
+		printf("Can message with id: %i sent\n\r",message_send.id);
+		_delay_ms(1000);
+		message_received = CAN_receive_data(&message_receive);
+		printf("Can message with id: %i recived\n\r",message_receive.id);
     }
 }

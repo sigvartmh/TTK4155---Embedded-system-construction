@@ -73,8 +73,6 @@ void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
 		
 	//Deselect CAN-controller
 	SPI_deselect();
-		
-	return 0;
 }
 
 void mcp2515_reset(void) {

@@ -2,7 +2,7 @@
 #include "spi.h"
 
 //Define SPI port
-#define SPI_DDRB DDRB
+#define SPI_DDR DDRB
 #define SPI_PORT PORTB
 
 //Define SPI pins
@@ -13,10 +13,10 @@
 
 int SPI_init(void) {
 	//Set MOSI, SCK and SS as output pins
-	SPI_DDRB |= (1<<SPI_MOSI) | (1<<SPI_SCK) | (1<<SPI_SS);
+	SPI_DDR |= (1<<SPI_MOSI) | (1<<SPI_SCK) | (1<<SPI_SS);
 	
 	//Set MISO as input pin (maybe not needed)
-	SPI_DDRB &= ~(1<<SPI_MISO);
+	SPI_DDR &= ~(1<<SPI_MISO);
 	
 	//Enable SPI in master mode and set clock rate fosc/16
 	SPCR	 |= ((1<<SPE) | (1<<MSTR) | ((1<<SPR1)| (1<<SPR0)));
