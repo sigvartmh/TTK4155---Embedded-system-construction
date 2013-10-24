@@ -3,9 +3,9 @@
 
 //Setup for the OSC fq which is then set to be the CPU fq
 //Not sure if it's the right OSC freq. will test with usart
-#define F_OSC 4915450
+#define F_OSC 4915450UL
 #define F_CPU F_OSC
-#define BAUD 9600
+#define BAUD 9600 //19200
 
 //Added from the project description to help setting bits in registers
 #define set_bit(reg,bit) (reg |= (1 << bit))

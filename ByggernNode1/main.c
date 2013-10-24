@@ -31,12 +31,12 @@ int main(void) {
 	message_send.id = 3;
 	message_send.length = 1;
 	message_send.data[0] = (uint8_t) 1;
-	CAN_message_send(&message_send);
+	CAN_send_message(&message_send,0);
 	printf("Message sent\n\r");
 	
 	_delay_ms(100);
 	
-	message_received = CAN_data_receive(&message_receive);
+	message_received = CAN_receive_data(&message_receive);
 	printf("Message id: %i\n\r", message_receive.id);
 	printf("Message length: %i\n\r", message_receive.length);
 	for(int i = 0; i < message_receive.length; i++) {

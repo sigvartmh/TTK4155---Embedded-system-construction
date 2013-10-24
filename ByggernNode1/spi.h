@@ -3,7 +3,7 @@
 
 int SPI_init(void);
 
-int SPI_send(char data);
+void SPI_write(uint8_t data);
 uint8_t SPI_read(void);
 
 void SPI_select(void);

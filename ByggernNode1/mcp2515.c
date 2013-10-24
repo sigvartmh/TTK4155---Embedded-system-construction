@@ -3,7 +3,7 @@
 #include "spi.h"
 #include "mcp2515.h"
 
-int mcp2515_init(void) {
+uint8_t mcp2515_init(void) {
 	volatile uint8_t value;
 	
 	//Initialize SPI driver
@@ -22,81 +22,74 @@ int mcp2515_init(void) {
 	return 0;
 }
 
-int mcp2515_write(uint8_t address, uint8_t data) {
-	//Select CAN-controller
-	SPI_select();
-		
-	SPI_send(MCP_WRITE);	//Send write command
-	SPI_send(address);		//Send address
-	SPI_send(data);			//Send data
-		
-	//Deselect CAN-controller
-	SPI_deselect();
-		
-	return 0;
-}
-
-int mcp2515_request_to_send(uint8_t command) {
-	//Select CAN-controller
-	SPI_select();
-	
-	//Check the last three bits for the commands
-	if(command <= 7) {
-		SPI_send(MCP_RTS | (1<<command));
-	} 
-	
-	//Deselect CAN-controller
-	SPI_deselect();	
-	
-	return 0;
-}
-
-int mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
-	//Select CAN-controller
-	SPI_select();
-		
-	SPI_send(MCP_BITMOD);		//Send bit modify command
-	SPI_send(address);			//Send address
-	SPI_send(mask);				//Send mask byte
-	SPI_send(data);				//Send data
-		
-	//Deselect CAN-controller
-	SPI_deselect();
-		
-	return 0;
-}
-
-int mcp2515_reset(void) {
-	//Select CAN-controller
-	SPI_select();
-	
-	SPI_send(MCP_RESET);	//Send reset command
-	
-	//Deselect CAN-controller
-	SPI_deselect();
-	
-	return 0;
-}
-
 uint8_t mcp2515_read(uint8_t address) {
 	//Select CAN-controller
 	SPI_select();
 	
-	SPI_send(MCP_READ);		//Send read command
-	SPI_send(address);		//Send address
+	SPI_write(MCP_READ);		//Send read command
+	SPI_write(address);			//Send address
+	
 	uint8_t result = SPI_read();	//Read result
 	
-	//Deselect CAN-controller
+	//De-select CAN-controller
 	SPI_deselect();
 	
 	return result;
 }
 
+void mcp2515_write(uint8_t address, uint8_t data) {
+	//Select CAN-controller
+	SPI_select();
+		
+	SPI_write(MCP_WRITE);	//Send write command
+	SPI_write(address);		//Send address
+	SPI_write(data);			//Send data
+		
+	//De-select CAN-controller
+	SPI_deselect();
+}
+
+void mcp2515_request_to_send(uint8_t command) {
+	//Select CAN-controller
+	SPI_select();
+	
+	//Check the last three bits for the commands
+	if(command < 8) {
+		SPI_write(MCP_RTS | (1<<command));
+	} 
+	
+	//Deselect CAN-controller
+	SPI_deselect();	
+}
+
+void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
+	//Select CAN-controller
+	SPI_select();
+		
+	SPI_write(MCP_BITMOD);		//Send bit modify command
+	SPI_write(address);			//Send address
+	SPI_write(mask);				//Send mask byte
+	SPI_write(data);				//Send data
+		
+	//Deselect CAN-controller
+	SPI_deselect();
+		
+	return 0;
+}
+
+void mcp2515_reset(void) {
+	SPI_select();			//Select CAN-controller
+	SPI_write(MCP_RESET);	//Send reset command
+	SPI_deselect();			//De-select CAN-controller
+}
+
+
+
 uint8_t mcp2515_read_status(void) {
 	//Select CAN-controller
 	SPI_select();
 	
-	SPI_send(MCP_READ_STATUS);	//Send read status command
+	SPI_write(MCP_READ_STATUS);	//Send read status command
 	uint8_t result = SPI_read();		//Read result
 	
 	//Deselect CAN-controller
