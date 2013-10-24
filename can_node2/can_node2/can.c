@@ -16,6 +16,9 @@ uint8_t CAN_init(void) {
 	//Enable normal mode
 	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
 	
+	//Enable listen only mode
+	//mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LISTENONLY);
+	
 	//is CANINTE.MERRE enabled?
 	//Enable interrupt when message is sent (TX0IE = 1) and recived(RX0IE = 1)
 	mcp2515_bit_modify(MCP_CANINTE, 0x03, 0x03);
@@ -95,10 +98,7 @@ uint8_t CAN_select_recivebuffer(){
 
 
 CAN_message_t* CAN_receive_data(CAN_message_t* message) {
-	/*while(1){
-		uint8_t status = mcp2515_read_status();
-		if(status&((1<<MCP)))
-	}*/
+
 	uint8_t can_buffer = 0;
 	can_buffer = CAN_select_recivebuffer();
 	
@@ -113,6 +113,7 @@ CAN_message_t* CAN_receive_data(CAN_message_t* message) {
 	}
 	
 	message->id  = mcp2515_read(can_buffer+0x02)>>5; //read CAN HI
+	message->id  = mcp2515_read(can_buffer+0x01)<<3; //read CAN LO
 	
 	mcp2515_bit_modify(MCP_CANINTF, (1<<0)/*0x01*/,0x00);
 	
