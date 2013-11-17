@@ -1,0 +1,12 @@
+{
+  "name": "uart-webinterface",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node test.js"
+  },
+  "dependencies": {
+    "serialport": "*",
+    "socket.io": "*"
+  }
+}
