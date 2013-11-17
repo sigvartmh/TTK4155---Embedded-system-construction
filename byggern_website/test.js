@@ -36,15 +36,17 @@ io.sockets.on('connection', function (socket) {
   
   socket.on('position',function(data){
     console.log(data);
-    console.log('position detected')
+    console.log('position detected');
+    //serialPort.write(data+"\n");
   });
   	
-  	/*sp.on("open", function () {
+  	/*sp.on("open", function () { // make sp.on('open') parent to socket.io
 		console.log('open');
 		sp.on('data', function(data) {
    			console.log('data received: ' + data);
    			socket.emit('newpos', data);
 		});
+		
 	});*/
 
   socket.on('change', function(){
