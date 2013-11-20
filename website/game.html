@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+<style type="text/css">
+h1
+{
+	text-align: center;
+	font-family: 'Roboto Condensed', sans-serif;
+	color: #888888
+}
+body{
+	background-color: #555555;
+	 -webkit-user-select: none;
+     -moz-user-select: -moz-none;
+      -ms-user-select: none;
+          user-select: none;
+}
+#gameboard
+{
+	background-color: #558955;
+	position: relative;
+	height: 600px;
+	margin: 0 auto;
+	border:1px solid black;
+
+}
+.board
+{
+	height: 100%;
+}
+#drawboard
+{
+	height: 90%;
+	width: 100%;
+}
+#playrange
+{
+	background-color: inherit;
+	height: 50px;
+	bottom: 0;
+	border-top: 1px solid black;
+	position: absolute;
+}
+#gametag
+{
+	background-color: #000;
+	position: absolute;
+}
+#buttons{
+	margin: 0 auto;
+	font-family: 'Roboto Condensed', sans-serif;
+	text-align: center;
+	margin-top: 20px;
+	color: #ffffff;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	var x = Array(0);
+	var left;
+	var right;
+	var width = '450px';
+	var inc = (parseFloat(width)/2)-25;
+
+	var _startX = 0;
+	var _offsetX = 0;
+	var _dragElement;
+	var position;
+	var score_value = 0;
+
+	
+	document.onmousedown = OnMouseDown;
+	document.onmouseup = OnMouseUp;
+
+	function OnMouseDown(event){
+		document.onmousemove = OnMouseMove;
+		_startX = event.clientX;
+    	_offsetX = document.getElementById('gametag').offsetLeft;
+    	_dragElement = document.getElementById('gametag');
+	}
+
+	function OnMouseMove(event){
+		if(-1<(_offsetX + event.clientX - _startX) && (_offsetX + event.clientX - _startX)<(parseInt(width)-49)){
+    		_dragElement.style.left = (_offsetX + event.clientX - _startX) + 'px';
+    	inc = _offsetX + event.clientX - _startX;
+    	position = (parseInt(document.getElementById("gametag").style.left)/(parseInt(width)-50))*100;
+    	}
+	}
+
+	function OnMouseUp(event){
+    document.onmousemove = null;
+    _dragElement=null;
+    	socket.emit('position', position);
+	}
+
+	var socket = io.connect('http://localhost');
+  	socket.on('news', function (data) {
+    	console.log(data);
+    	socket.emit('my other event', { my: 'data' });
+    	socket.on('newpos', function (pos){
+    		inc = parseInt(pos);
+    		document.getElementById("gametag").style.left=pos;
+    	});
+  	});
+
+  	socket.on('update_score',function(score){
+    	score_value = score;
+    	var score_board = document.getElementById("score");
+  		score_board.value=score_value
+    });
+
+  	function postEvent(position){
+  		var gameboard_width = document.getElementById("gameboard").style.width;
+  		var pos = (parseInt(position)/(parseInt(gameboard_width)-50))*100;
+  		socket.emit('position', pos);
+ 	}
+
+
+	window.onload = function()
+    {
+    	x[0]=inc;
+    	var start = x.join('')+'px'
+    	document.getElementById("gametag").style.left=start;
+    	document.getElementById('gameboard').style.width=width;
+    	document.getElementById('playrange').style.width=width;
+    	document.getElementById('buttons').style.width=width;
+
+    	var score_board = document.getElementById("score");
+  		score_board.value=score_value;
+    };
+	
+	function displayRight(){
+		inc = inc + 50;
+		if(inc>(parseInt(width)-50)){
+			inc = parseInt(width) - 50;
+		}
+		x[0]=inc;
+		var left = x.join('')+'px'
+		postEvent(left);
+		document.getElementById("gametag").style.left=left;
+	}
+
+	function displayLeft(){
+		inc = inc - 50;
+		if(inc<0){
+			inc=0;
+		}
+		x[0]=inc;
+		right = x.join('')+'px'
+		postEvent(right);
+		document.getElementById("gametag").style.left=right;
+	}
+
+	function shoot(){
+		socket.emit('change');
+	}
+
+
+	document.onkeydown = function(event) {
+		var key_press = String.fromCharCode(event.keyCode);
+		var key_code = event.keyCode;
+		if(key_code == 37){
+			displayLeft();
+		}
+		if(key_code == 39){
+			displayRight();
+		}	 
+	}
+
+	//setInterval(function(){socket.emit('update')},1000);
+
+
+</script>
+
+
+<body>
+<h1>Ping Pong game</h1>
+<div>
+	<div id="gameboard">
+		<div id="playrange">
+			<div id="gametag" style="width: 50px; height: 50px;" unselectable='on'></div>
+		</div>
+	</div>
+	<div id="buttons">
+		<button type="button" onclick="displayLeft()">left!</button>
+		<button type="button" onclick="shoot()">Shoot!</button>
+		<button type="button" onclick="displayRight()">right!</button>
+	</div>
+	<div id="buttons">
+		Score: <input type="text" id="score">
+	</div>
+</div>
+
+</body>
+</html>
+
+
+			<canvas id="drawboard">
+			</canvas>
+ 	<script>
+      var canvas = document.getElementById('drawboard');
+      var context = canvas.getContext('2d');
+      var centerX = canvas.width / 2;
+      var centerY = canvas.height / 2;
+      var radius = 10;
+
+    function draw(){
+		context.fillStyle = 'white';
+		context.beginPath();
+      	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+      	context.fill();
+      	context.lineWidth = 1;
+      	context.stroke();
+	}
+	draw();
+    </script>
