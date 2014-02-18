@@ -1,3 +1,5 @@
+//menu system prototype, not finished
+
 #include<stdlib.h>
 #include<stdio.h>
 
