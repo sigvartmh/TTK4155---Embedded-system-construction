@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "PingPong_node1", "PingPong_node1\PingPong_node1.cproj", "{3497BF21-D970-40F8-90A5-F18799B8E609}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3497BF21-D970-40F8-90A5-F18799B8E609}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3497BF21-D970-40F8-90A5-F18799B8E609}.Debug|AVR.Build.0 = Debug|AVR
+		{3497BF21-D970-40F8-90A5-F18799B8E609}.Release|AVR.ActiveCfg = Release|AVR
+		{3497BF21-D970-40F8-90A5-F18799B8E609}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
