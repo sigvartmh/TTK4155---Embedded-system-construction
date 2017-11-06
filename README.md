@@ -3,8 +3,8 @@ PingPong
 
 Byggern
 
-#Files
-##Node 1
+# Files
+## Node 1
 - main.c
 - setup.h			Config file for ATmega168
 - adc.c 			ADC-driver for the ATmega168
