@@ -38,7 +38,7 @@ Byggern
 - font_8x8.h		 
 - font_drawings.h	 
 
-##Node 2
+## Node 2
 - main.c
 - ring_buffer.h 	Ring buffer for AVR  
 - setup.h 			Config file for 
